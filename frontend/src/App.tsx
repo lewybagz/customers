@@ -14,6 +14,7 @@ import Customers from "./pages/Customers";
 import Admin from "./pages/Admin";
 import PrivateRoute from "./components/PrivateRoute";
 import { auth } from "./lib/firebase";
+import Suggestions from "./pages/Suggestions";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/suggestions" element={<Suggestions />} />
                 {/* Redirect root to dashboard */}
                 <Route
                   path="/"
