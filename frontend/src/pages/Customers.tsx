@@ -6,7 +6,7 @@ import {
   orderBy,
   Timestamp,
 } from "firebase/firestore";
-import { db } from "../lib/apollo-client";
+import { db } from "../lib/firebase";
 import {
   PlusIcon,
   PencilIcon,
@@ -204,9 +204,9 @@ export default function Customers() {
   if (loading) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-12 bg-gray-200 rounded w-full"></div>
+        <div className="h-12 bg-muted-foreground/20 rounded w-full"></div>
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-20 bg-gray-200 rounded"></div>
+          <div key={i} className="h-20 bg-muted-foreground/20 rounded"></div>
         ))}
       </div>
     );
@@ -214,11 +214,11 @@ export default function Customers() {
 
   if (error) {
     return (
-      <div className="bg-red-50 border-l-4 border-red-400 p-4">
+      <div className="bg-destructive/10 border-l-4 border-destructive p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg
-              className="h-5 w-5 text-red-400"
+              className="h-5 w-5 text-destructive"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -230,7 +230,9 @@ export default function Customers() {
             </svg>
           </div>
           <div className="ml-3">
-            <p className="text-sm text-red-700">Error loading customers</p>
+            <p className="text-sm text-destructive-foreground">
+              Error loading customers
+            </p>
           </div>
         </div>
       </div>
@@ -238,371 +240,330 @@ export default function Customers() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-squadspot-secondary">
       {/* Header */}
-      <div className="sm:flex sm:items-center sm:justify-between bg-white shadow-md rounded-lg p-6 border border-gray-100">
+      <div className="sm:flex sm:items-center sm:justify-between bg-card shadow-md rounded-lg p-6 border border-border">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Customers</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <h2 className="text-2xl font-bold text-card-foreground">Customers</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
             Manage your customer relationships
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
           <button
+            type="button"
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-primary-foreground bg-squadspot-primary hover:bg-squadspot-primary/90 focus:outline-none"
           >
-            <PlusIcon className="h-5 w-5 mr-2" />
+            <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             Add Customer
           </button>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white shadow-lg rounded-lg border border-gray-100 p-6 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {/* Search */}
-          <div className="max-w-lg w-full lg:max-w-xs">
-            <label htmlFor="search" className="sr-only">
-              Search customers
-            </label>
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <input
-                type="text"
-                name="search"
-                id="search"
-                className="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition-colors duration-150"
-                placeholder="Search by name, email, phone, company..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+      <div className="p-4 bg-card shadow rounded-lg border border-border">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex-grow">
+            <input
+              type="text"
+              placeholder="Search customers (name, email, company...)"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="block w-full px-4 py-2 border border-border rounded-md shadow-sm sm:text-sm bg-input text-foreground"
+            />
           </div>
-
-          {/* Filter Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-foreground bg-secondary hover:bg-secondary/80 focus:outline-none"
           >
-            <AdjustmentsHorizontalIcon className="h-5 w-5 mr-2 text-gray-400" />
-            Filters
-            {Object.values(filters).some((value) => value !== "all") && (
-              <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                Active
-              </span>
-            )}
+            <AdjustmentsHorizontalIcon className="mr-2 h-5 w-5" />
+            {showFilters ? "Hide Filters" : "Show Filters"}
           </button>
         </div>
 
-        {/* Filters Panel */}
         {showFilters && (
-          <div className="bg-gray-50 p-4 rounded-lg space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium text-gray-900">Filters</h3>
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <label
+                htmlFor="status-filter"
+                className="block text-sm font-medium text-card-foreground"
+              >
+                Status
+              </label>
+              <select
+                id="status-filter"
+                value={filters.status}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    status: e.target.value as Filters["status"],
+                  })
+                }
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+              >
+                <option value="all">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="payment-status-filter"
+                className="block text-sm font-medium text-card-foreground"
+              >
+                Payment Status
+              </label>
+              <select
+                id="payment-status-filter"
+                value={filters.paymentStatus}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    paymentStatus: e.target.value as Filters["paymentStatus"],
+                  })
+                }
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+              >
+                <option value="all">All Payments</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="price-range-filter"
+                className="block text-sm font-medium text-card-foreground"
+              >
+                Price Range
+              </label>
+              <select
+                id="price-range-filter"
+                value={filters.priceRange}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    priceRange: e.target.value as Filters["priceRange"],
+                  })
+                }
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+              >
+                <option value="all">All Prices</option>
+                <option value="0-100">$0 - $100</option>
+                <option value="101-500">$101 - $500</option>
+                <option value="501-1000">$501 - $1000</option>
+                <option value="1000+">$1000+</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="date-added-filter"
+                className="block text-sm font-medium text-card-foreground"
+              >
+                Date Added
+              </label>
+              <select
+                id="date-added-filter"
+                value={filters.dateAdded}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    dateAdded: e.target.value as Filters["dateAdded"],
+                  })
+                }
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+              >
+                <option value="all">Any Time</option>
+                <option value="today">Today</option>
+                <option value="this-week">This Week</option>
+                <option value="this-month">This Month</option>
+                <option value="this-year">This Year</option>
+              </select>
+            </div>
+            <div className="col-span-full flex justify-end">
               <button
                 onClick={resetFilters}
-                className="text-sm text-gray-500 hover:text-gray-700 flex items-center"
+                className="text-sm font-medium text-squadspot-primary hover:text-squadspot-primary/90"
               >
-                <XMarkIcon className="h-4 w-4 mr-1" />
-                Reset filters
+                Reset Filters
               </button>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Status Filter */}
-              <div>
-                <label
-                  htmlFor="status"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Status
-                </label>
-                <select
-                  id="status"
-                  value={filters.status}
-                  onChange={(e) =>
-                    setFilters({
-                      ...filters,
-                      status: e.target.value as Filters["status"],
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-                  <option value="all">All</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
-
-              {/* Payment Status Filter */}
-              <div>
-                <label
-                  htmlFor="paymentStatus"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Payment Status
-                </label>
-                <select
-                  id="paymentStatus"
-                  value={filters.paymentStatus}
-                  onChange={(e) =>
-                    setFilters({
-                      ...filters,
-                      paymentStatus: e.target.value as Filters["paymentStatus"],
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-                  <option value="all">All</option>
-                  <option value="paid">Paid</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </div>
-
-              {/* Price Range Filter */}
-              <div>
-                <label
-                  htmlFor="priceRange"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Price Range
-                </label>
-                <select
-                  id="priceRange"
-                  value={filters.priceRange}
-                  onChange={(e) =>
-                    setFilters({
-                      ...filters,
-                      priceRange: e.target.value as Filters["priceRange"],
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-                  <option value="all">All</option>
-                  <option value="0-100">$0 - $100</option>
-                  <option value="101-500">$101 - $500</option>
-                  <option value="501-1000">$501 - $1000</option>
-                  <option value="1000+">$1000+</option>
-                </select>
-              </div>
-
-              {/* Date Added Filter */}
-              <div>
-                <label
-                  htmlFor="dateAdded"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Date Added
-                </label>
-                <select
-                  id="dateAdded"
-                  value={filters.dateAdded}
-                  onChange={(e) =>
-                    setFilters({
-                      ...filters,
-                      dateAdded: e.target.value as Filters["dateAdded"],
-                    })
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-                  <option value="all">All time</option>
-                  <option value="today">Today</option>
-                  <option value="this-week">This week</option>
-                  <option value="this-month">This month</option>
-                  <option value="this-year">This year</option>
-                </select>
-              </div>
             </div>
           </div>
         )}
+      </div>
 
-        {/* Results Summary */}
-        <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-          <p className="text-sm text-gray-500">
-            Showing{" "}
-            <span className="font-medium">{filteredCustomers.length}</span> of{" "}
-            <span className="font-medium">{customers.length}</span> customers
-          </p>
-          {searchTerm && (
-            <p className="text-sm text-gray-500">
-              Search results for "{searchTerm}"
-            </p>
-          )}
-        </div>
-
-        {/* Table */}
-        <div className="-mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden shadow-[0_4px_40px_-2px_rgba(0,0,0,0.3)] rounded-lg border border-gray-200">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Company
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Price
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Payment Status
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Status
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Software
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    >
-                      <span className="sr-only">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {filteredCustomers.map((customer) => (
-                    <tr
-                      key={customer.id}
-                      className="hover:bg-gray-50/90 transition-all duration-150 ease-in-out group"
-                    >
-                      <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-6">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors duration-150">
-                            <span className="text-gray-600 font-medium text-lg">
-                              {customer.name.charAt(0)}
-                            </span>
-                          </div>
-                          <div className="ml-4">
-                            <div className="font-medium text-gray-900">
-                              {customer.name}
-                            </div>
-                            <div className="text-gray-500">
-                              {customer.email}
-                            </div>
+      {/* Customer List/Table */}
+      <div className="bg-card shadow-lg rounded-lg overflow-hidden border border-border">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted/50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                >
+                  Name
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                >
+                  Contact
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                >
+                  Company
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                >
+                  Status
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                >
+                  Price
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                >
+                  Payment
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                >
+                  Added
+                </th>
+                <th scope="col" className="relative px-6 py-3">
+                  <span className="sr-only">Edit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-card divide-y divide-border">
+              {filteredCustomers.length > 0 ? (
+                filteredCustomers.map((customer) => (
+                  <tr key={customer.id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-card-foreground">
+                            {customer.name}
                           </div>
                         </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-muted-foreground">
+                        {customer.email}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {customer.phone}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-card-foreground">
                         {customer.company}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-900">
-                        ${customer.price.toFixed(2)}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm">
-                        {customer.hasPaid ? (
-                          <div>
-                            <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                              Paid
-                            </span>
-                            {customer.paidDate && (
-                              <span className="ml-2 text-gray-500">
-                                {new Date(
-                                  customer.paidDate
-                                ).toLocaleDateString()}
-                              </span>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
-                            Pending
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          customer.status === "active"
+                            ? "bg-squadspot-primary/10 text-squadspot-primary"
+                            : "bg-muted/20 text-muted-foreground"
+                        }`}
+                      >
+                        {customer.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-card-foreground">
+                      ${customer.price.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          customer.hasPaid
+                            ? "bg-squadspot-primary/10 text-squadspot-primary"
+                            : "bg-yellow-100 text-yellow-800" // Kept yellow for pending, can be themed
+                        }`}
+                      >
+                        {customer.hasPaid ? "Paid" : "Pending"}
+                        {customer.hasPaid && customer.paidDate && (
+                          <span className="ml-1 text-xs text-muted-foreground">
+                            (on{" "}
+                            {new Date(customer.paidDate).toLocaleDateString()})
                           </span>
                         )}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm">
-                        <span
-                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            customer.status === "active"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                      {new Date(customer.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 pt-6 pb-4 whitespace-nowrap text-center text-sm font-medium flex items-center justify-center gap-2 h-full">
+                      {customer.softwareUrl && (
+                        <a
+                          href={customer.softwareUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-squadspot-primary flex items-center"
+                          title="Open Software URL"
                         >
-                          {customer.status.charAt(0).toUpperCase() +
-                            customer.status.slice(1)}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                        {customer.softwareUrl ? (
-                          <a
-                            href={customer.softwareUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-indigo-600 hover:text-indigo-900 transition-colors duration-150"
-                          >
-                            <LinkIcon className="h-4 w-4 mr-1" />
-                            View
-                          </a>
-                        ) : (
-                          <span className="text-gray-400">Not available</span>
-                        )}
-                      </td>
-                      <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <button
-                          onClick={() => handleEditClick(customer)}
-                          className="text-indigo-600 hover:text-indigo-900 inline-flex items-center transition-colors duration-150"
-                        >
-                          <PencilIcon className="h-4 w-4 mr-1" />
-                          Edit
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                          <LinkIcon className="h-5 w-5" />
+                        </a>
+                      )}
+                      <button
+                        onClick={() => handleEditClick(customer)}
+                        className="text-squadspot-primary hover:text-squadspot-primary/90 flex items-center"
+                      >
+                        <PencilIcon className="h-5 w-5" />
+                        <span className="sr-only">Edit {customer.name}</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="px-6 py-12 text-center text-sm text-muted-foreground"
+                  >
+                    <XMarkIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="mt-2">
+                      No customers found matching your criteria.
+                    </p>
+                    <p className="mt-1">
+                      Try adjusting your search or filters.
+                    </p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {/* Add Customer Modal */}
-      <Modal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        title="Add New Customer"
-      >
-        <CustomerForm
-          onSuccess={() => {
-            setIsAddModalOpen(false);
-            fetchCustomers();
-          }}
-          onCancel={() => setIsAddModalOpen(false)}
-        />
-      </Modal>
+      {/* Add/Edit Modals */}
+      {isAddModalOpen && (
+        <Modal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          title="Add New Customer"
+        >
+          <CustomerForm
+            onSuccess={() => {
+              setIsAddModalOpen(false);
+              fetchCustomers();
+            }}
+            onCancel={() => setIsAddModalOpen(false)}
+          />
+        </Modal>
+      )}
 
       {/* Edit Customer Modal */}
       <Modal

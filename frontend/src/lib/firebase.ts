@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,26 +12,9 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
-
-// Email Link Authentication helpers
-export const sendAuthEmail = async (email: string) => {
-  const actionCodeSettings = {
-    url: window.location.origin + '/auth/email-signin',
-    handleCodeInApp: true,
-  };
-
-  try {
-    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-    // Save the email for later use
-    window.localStorage.setItem('emailForSignIn', email);
-    return true;
-  } catch (error) {
-    console.error('Error sending email link:', error);
-    return false;
-  }
-};
 
 export const completeEmailSignIn = async () => {
   if (!isSignInWithEmailLink(auth, window.location.href)) {

@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
-import { db } from "../lib/apollo-client";
+import { db } from "../lib/firebase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -18,6 +18,7 @@ const customerSchema = z.object({
   paidDate: z.date().nullable(),
   notes: z.string().optional(),
   softwareUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
+  thirdPartyServices: z.string().optional(),
 });
 
 type CustomerFormData = z.infer<typeof customerSchema>;
@@ -50,6 +51,8 @@ export default function CustomerForm({
       paidDate: null,
       price: 0,
       softwareUrl: "",
+      notes: "",
+      thirdPartyServices: "",
       ...initialData,
     },
   });
@@ -91,12 +94,12 @@ export default function CustomerForm({
       {/* Form Sections */}
       <div className="space-y-8">
         {/* Basic Information */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-6">
+        <div className="bg-card p-6 rounded-lg shadow-sm border border-border space-y-6">
           <div>
-            <h3 className="text-lg font-medium leading-6 text-gray-900">
+            <h3 className="text-lg font-medium leading-6 text-card-foreground">
               Basic Information
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               Customer's primary contact details.
             </p>
           </div>
@@ -106,27 +109,28 @@ export default function CustomerForm({
             <div className="col-span-2 sm:col-span-1">
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-900"
+                className="block text-sm font-medium text-card-foreground"
               >
-                Name <span className="text-red-500">*</span>
+                Name <span className="text-destructive">*</span>
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <input
                   type="text"
                   id="name"
                   {...register("name")}
-                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out
+                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
                     ${
                       errors.name
-                        ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        ? "border-destructive text-destructive placeholder-destructive/70"
+                        : "border-border"
                     }`}
                   placeholder="John Doe"
+                  disabled={isSubmitting}
                 />
                 {errors.name && (
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-red-500"
+                      className="h-5 w-5 text-destructive"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -140,7 +144,7 @@ export default function CustomerForm({
                 )}
               </div>
               {errors.name && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-destructive">
                   {errors.name.message}
                 </p>
               )}
@@ -150,27 +154,28 @@ export default function CustomerForm({
             <div className="col-span-2 sm:col-span-1">
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-900"
+                className="block text-sm font-medium text-card-foreground"
               >
-                Email <span className="text-red-500">*</span>
+                Email <span className="text-destructive">*</span>
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <input
                   type="email"
                   id="email"
                   {...register("email")}
-                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out
+                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
                     ${
                       errors.email
-                        ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        ? "border-destructive text-destructive placeholder-destructive/70"
+                        : "border-border"
                     }`}
                   placeholder="john@example.com"
+                  disabled={isSubmitting}
                 />
                 {errors.email && (
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-red-500"
+                      className="h-5 w-5 text-destructive"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -184,7 +189,7 @@ export default function CustomerForm({
                 )}
               </div>
               {errors.email && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-destructive">
                   {errors.email.message}
                 </p>
               )}
@@ -194,27 +199,28 @@ export default function CustomerForm({
             <div className="col-span-2 sm:col-span-1">
               <label
                 htmlFor="phone"
-                className="block text-sm font-medium text-gray-900"
+                className="block text-sm font-medium text-card-foreground"
               >
-                Phone <span className="text-red-500">*</span>
+                Phone <span className="text-destructive">*</span>
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <input
                   type="tel"
                   id="phone"
                   {...register("phone")}
-                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out
+                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
                     ${
                       errors.phone
-                        ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        ? "border-destructive text-destructive placeholder-destructive/70"
+                        : "border-border"
                     }`}
                   placeholder="(555) 123-4567"
+                  disabled={isSubmitting}
                 />
                 {errors.phone && (
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-red-500"
+                      className="h-5 w-5 text-destructive"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -228,7 +234,7 @@ export default function CustomerForm({
                 )}
               </div>
               {errors.phone && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-destructive">
                   {errors.phone.message}
                 </p>
               )}
@@ -238,27 +244,28 @@ export default function CustomerForm({
             <div className="col-span-2 sm:col-span-1">
               <label
                 htmlFor="company"
-                className="block text-sm font-medium text-gray-900"
+                className="block text-sm font-medium text-card-foreground"
               >
-                Company <span className="text-red-500">*</span>
+                Company <span className="text-destructive">*</span>
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <input
                   type="text"
                   id="company"
                   {...register("company")}
-                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out
+                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
                     ${
                       errors.company
-                        ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        ? "border-destructive text-destructive placeholder-destructive/70"
+                        : "border-border"
                     }`}
-                  placeholder="Company Name"
+                  placeholder="Acme Inc."
+                  disabled={isSubmitting}
                 />
                 {errors.company && (
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-red-500"
+                      className="h-5 w-5 text-destructive"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -272,7 +279,7 @@ export default function CustomerForm({
                 )}
               </div>
               {errors.company && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-destructive">
                   {errors.company.message}
                 </p>
               )}
@@ -280,47 +287,74 @@ export default function CustomerForm({
           </div>
         </div>
 
-        {/* Business Details */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-6">
+        {/* Status and Financials */}
+        <div className="bg-card p-6 rounded-lg shadow-sm border border-border space-y-6">
           <div>
-            <h3 className="text-lg font-medium leading-6 text-gray-900">
-              Business Details
+            <h3 className="text-lg font-medium leading-6 text-card-foreground">
+              Status & Financials
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
-              Customer's business and payment information.
+            <p className="mt-1 text-sm text-muted-foreground">
+              Customer status, pricing, and payment information.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* Status Field */}
+            <div className="col-span-2 sm:col-span-1">
+              <label
+                htmlFor="status"
+                className="block text-sm font-medium text-card-foreground"
+              >
+                Status <span className="text-destructive">*</span>
+              </label>
+              <select
+                id="status"
+                {...register("status")}
+                className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
+                  ${
+                    errors.status
+                      ? "border-destructive text-destructive"
+                      : "border-border"
+                  }`}
+                disabled={isSubmitting}
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              {errors.status && (
+                <p className="mt-2 text-sm text-destructive">
+                  {errors.status.message}
+                </p>
+              )}
+            </div>
+
             {/* Price Field */}
             <div className="col-span-2 sm:col-span-1">
               <label
                 htmlFor="price"
-                className="block text-sm font-medium text-gray-900"
+                className="block text-sm font-medium text-card-foreground"
               >
-                Price <span className="text-red-500">*</span>
+                Price ($) <span className="text-destructive">*</span>
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm">$</span>
-                </div>
                 <input
                   type="number"
                   id="price"
+                  step="0.01"
                   {...register("price", { valueAsNumber: true })}
-                  className={`pl-7 block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out
+                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
                     ${
                       errors.price
-                        ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        ? "border-destructive text-destructive placeholder-destructive/70"
+                        : "border-border"
                     }`}
-                  placeholder="0.00"
-                  step="0.01"
+                  placeholder="199.99"
+                  disabled={isSubmitting}
                 />
                 {errors.price && (
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-red-500"
+                      className="h-5 w-5 text-destructive"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -334,37 +368,122 @@ export default function CustomerForm({
                 )}
               </div>
               {errors.price && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-destructive">
                   {errors.price.message}
                 </p>
               )}
             </div>
 
+            {/* Has Paid Field (Toggle Switch) */}
+            <div className="col-span-2 sm:col-span-1 flex items-center p-10">
+              <label
+                htmlFor="hasPaid"
+                className="block text-sm font-medium text-card-foreground mr-4"
+              >
+                Payment Received
+              </label>
+              <button
+                type="button"
+                id="hasPaid"
+                onClick={() =>
+                  setValue("hasPaid", !hasPaid, { shouldValidate: true })
+                }
+                className={`${hasPaid ? "bg-squadspot-primary" : "bg-muted"}
+                  relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none disabled:opacity-50`}
+                disabled={isSubmitting}
+              >
+                <span className="sr-only">Has Paid</span>
+                <span
+                  aria-hidden="true"
+                  className={`${hasPaid ? "translate-x-5" : "translate-x-0"}
+                    pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200`}
+                />
+              </button>
+              {errors.hasPaid && (
+                <p className="ml-3 text-sm text-destructive">
+                  {errors.hasPaid.message}
+                </p>
+              )}
+            </div>
+
+            {/* Paid Date Field (Conditional) */}
+            {hasPaid && (
+              <div className="col-span-2 sm:col-span-1">
+                <label
+                  htmlFor="paidDate"
+                  className="block text-sm font-medium text-card-foreground"
+                >
+                  Paid Date
+                </label>
+                <div className="mt-1 react-datepicker-wrapper">
+                  <DatePicker
+                    id="paidDate"
+                    selected={watch("paidDate")}
+                    onChange={(date: Date | null) =>
+                      setValue("paidDate", date, { shouldValidate: true })
+                    }
+                    className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
+                      ${
+                        errors.paidDate
+                          ? "border-destructive text-destructive"
+                          : "border-border"
+                      }`}
+                    placeholderText="Select date"
+                    dateFormat="MM/dd/yyyy"
+                    isClearable
+                    showPopperArrow={false}
+                    disabled={isSubmitting}
+                    popperClassName="!z-[60]" // Ensure popper is above modal content
+                  />
+                </div>
+                {errors.paidDate && (
+                  <p className="mt-2 text-sm text-destructive">
+                    {errors.paidDate.message}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Additional Information */}
+        <div className="bg-card p-6 rounded-lg shadow-sm border border-border space-y-6">
+          <div>
+            <h3 className="text-lg font-medium leading-6 text-card-foreground">
+              Additional Information
+            </h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Software/Website URL and any relevant notes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6">
             {/* Software URL Field */}
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <label
                 htmlFor="softwareUrl"
-                className="block text-sm font-medium text-gray-900"
+                className="block text-sm font-medium text-card-foreground"
               >
-                Software URL
+                Software/Website URL (Optional)
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <input
                   type="url"
                   id="softwareUrl"
                   {...register("softwareUrl")}
-                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out
+                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
                     ${
                       errors.softwareUrl
-                        ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        ? "border-destructive text-destructive placeholder-destructive/70"
+                        : "border-border"
                     }`}
-                  placeholder="https://example.com"
+                  placeholder="https://app.example.com/customer-portal"
+                  disabled={isSubmitting}
                 />
                 {errors.softwareUrl && (
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-red-500"
+                      className="h-5 w-5 text-destructive"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -378,142 +497,94 @@ export default function CustomerForm({
                 )}
               </div>
               {errors.softwareUrl && (
-                <p className="mt-2 text-sm text-red-600">
+                <p className="mt-2 text-sm text-destructive">
                   {errors.softwareUrl.message}
                 </p>
               )}
             </div>
 
-            {/* Status Field */}
-            <div className="col-span-2 sm:col-span-1">
+            {/* Notes Field */}
+            <div>
               <label
-                htmlFor="status"
-                className="block text-sm font-medium text-gray-900"
+                htmlFor="notes"
+                className="block text-sm font-medium text-card-foreground"
               >
-                Status
+                Notes (Optional)
               </label>
-              <select
-                id="status"
-                {...register("status")}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition duration-150 ease-in-out"
-              >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-            </div>
-
-            {/* Payment Status Section */}
-            <div className="col-span-2 bg-gray-50 p-4 rounded-lg space-y-4">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="hasPaid"
-                  {...register("hasPaid")}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded transition duration-150 ease-in-out"
+              <div className="mt-1">
+                <textarea
+                  id="notes"
+                  rows={4}
+                  {...register("notes")}
+                  className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
+                    ${
+                      errors.notes
+                        ? "border-destructive text-destructive placeholder-destructive/70"
+                        : "border-border"
+                    }`}
+                  placeholder="Any additional details about the customer..."
+                  disabled={isSubmitting}
                 />
-                <label
-                  htmlFor="hasPaid"
-                  className="ml-2 block text-sm font-medium text-gray-900"
-                >
-                  Payment Received
-                </label>
               </div>
-
-              {hasPaid && (
-                <div className="animate-fadeIn">
-                  <label
-                    htmlFor="paidDate"
-                    className="block text-sm font-medium text-gray-900"
-                  >
-                    Payment Date
-                  </label>
-                  <DatePicker
-                    selected={watch("paidDate")}
-                    onChange={(date) => setValue("paidDate", date)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition duration-150 ease-in-out"
-                    dateFormat="MMMM d, yyyy"
-                    placeholderText="Select payment date"
-                    maxDate={new Date()}
-                  />
-                </div>
+              {errors.notes && (
+                <p className="mt-2 text-sm text-destructive">
+                  {errors.notes.message}
+                </p>
               )}
-            </div>
-          </div>
-        </div>
-
-        {/* Notes Section */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-6">
-          <div>
-            <h3 className="text-lg font-medium leading-6 text-gray-900">
-              Additional Notes
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">
-              Any extra information about the customer.
-            </p>
-          </div>
-
-          <div>
-            <label
-              htmlFor="notes"
-              className="block text-sm font-medium text-gray-900"
-            >
-              Notes
-            </label>
-            <div className="mt-1">
-              <textarea
-                id="notes"
-                rows={4}
-                {...register("notes")}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm transition duration-150 ease-in-out"
-                placeholder="Add any additional notes here..."
-              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Form Actions */}
-      <div className="flex justify-end space-x-3">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? (
-            <>
-              <svg
-                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              {isEditing ? "Updating..." : "Adding..."}
-            </>
-          ) : (
-            <>{isEditing ? "Update Customer" : "Add Customer"}</>
+      {/* Action Buttons */}
+      <div className="pt-5">
+        <div className="flex justify-end space-x-3">
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={isSubmitting}
+              className="px-4 py-2 text-sm font-medium rounded-md shadow-sm border border-border text-secondary-foreground bg-secondary hover:bg-secondary/80 focus:outline-none disabled:opacity-50"
+            >
+              Cancel
+            </button>
           )}
-        </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="inline-flex justify-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-primary-foreground bg-squadspot-primary hover:bg-squadspot-primary/90 focus:outline-none disabled:opacity-50"
+          >
+            {isSubmitting ? (
+              <span className="flex items-center">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                {isEditing ? "Saving..." : "Adding..."}
+              </span>
+            ) : isEditing ? (
+              "Save Changes"
+            ) : (
+              "Add Customer"
+            )}
+          </button>
+        </div>
       </div>
     </form>
   );
