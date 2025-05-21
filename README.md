@@ -138,7 +138,4 @@ npm run build
 
 ## 🙏 Acknowledgments
 
-- React team for the frontend framework
-- Vite team for the build tool
-- Firebase team for the backend platform
-- All contributors and maintainers
+- Tovulti LLC
