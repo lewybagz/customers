@@ -1,24 +1,15 @@
 # Customer Tracking System
 
-A comprehensive full-stack solution for managing customer relationships, interactions, and job tracking. Built with NestJS (Backend) and React + Vite (Frontend), utilizing GraphQL for efficient data operations.
+A comprehensive solution for managing customer relationships, interactions, and projects. Built with React + Vite (Frontend) and Firebase (Backend-as-a-Service).
 
 ## 🏗️ Architecture
 
-The project is structured as a monorepo with two main components:
+The project consists of a frontend application that leverages Firebase for backend services.
 
-- **Backend**: NestJS application with GraphQL API
 - **Frontend**: React application built with Vite and TypeScript
+- **Backend**: Firebase (Authentication, Firestore Database)
 
 ### Technology Stack
-
-#### Backend
-
-- NestJS v11
-- GraphQL with Apollo Server
-- PostgreSQL with Prisma ORM
-- JWT Authentication
-- TypeScript
-- Jest for testing
 
 #### Frontend
 
@@ -26,17 +17,16 @@ The project is structured as a monorepo with two main components:
 - Vite
 - TypeScript
 - TailwindCSS
-- Apollo Client
+- Firebase SDK (for Authentication and Firestore)
 - Zustand for state management
-- React Query
+- React Query (if still applicable for client-side server state)
 
 ## 🚀 Features
 
 - **User Management**
 
-  - Role-based authentication (Admin, Manager, User)
-  - JWT-based secure authentication
-  - User profile management
+  - Firebase Authentication for secure sign-up, sign-in, and session management.
+  - User profile management (details to be aligned with actual implementation).
 
 - **Customer Management**
 
@@ -45,160 +35,102 @@ The project is structured as a monorepo with two main components:
   - Contact information management
   - Company and address details
 
-- **Interaction Tracking**
+- **Interaction Tracking** (If still a feature, otherwise remove or update)
 
   - Record various types of customer interactions
   - Chronological interaction history
   - Notes and follow-ups
 
-- **Job Management**
-  - Create and track customer jobs
+- **Project Management** (Replaces Job Management)
+  - Create and track customer projects
+  - Assign projects to customers
+  - Define project scope, technologies used, and URLs
   - Priority levels and status updates
-  - Due date tracking
-  - Job completion workflow
+  - Due date tracking (if applicable)
+  - Project completion workflow (if applicable)
 
 ## 🛠️ Setup and Installation
 
 ### Prerequisites
 
 - Node.js (>= v20)
-- PostgreSQL
 - npm or yarn
-
-### Backend Setup
-
-1. Navigate to the backend directory:
-
-```bash
-cd backend
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Create a `.env` file:
-
-```bash
-DATABASE_URL="postgresql://user:password@localhost:5432/customer_tracking"
-JWT_SECRET="your-secret-key"
-```
-
-4. Run Prisma migrations:
-
-```bash
-npx prisma migrate dev
-```
-
-5. Start the development server:
-
-```bash
-npm run start:dev
-```
+- A Firebase project set up with Authentication and Firestore enabled.
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
+1.  Navigate to the frontend directory:
 
 ```bash
 cd frontend
 ```
 
-2. Install dependencies:
+2.  Install dependencies:
 
 ```bash
 npm install
 ```
 
-3. Create a `.env` file:
+3.  Create a `.env` file in the `frontend` directory with your Firebase project configuration:
 
 ```bash
-VITE_API_URL="http://localhost:3000/graphql"
+VITE_FIREBASE_API_KEY="your-firebase-api-key"
+VITE_FIREBASE_AUTH_DOMAIN="your-firebase-auth-domain"
+VITE_FIREBASE_PROJECT_ID="your-firebase-project-id"
+VITE_FIREBASE_STORAGE_BUCKET="your-firebase-storage-bucket"
+VITE_FIREBASE_MESSAGING_SENDER_ID="your-firebase-messaging-sender-id"
+VITE_FIREBASE_APP_ID="your-firebase-app-id"
+VITE_FIREBASE_MEASUREMENT_ID="your-firebase-measurement-id" # Optional
 ```
 
-4. Start the development server:
+Replace `"your-firebase-..."` with your actual Firebase project credentials.
+
+4.  Start the development server:
 
 ```bash
 npm run dev
 ```
 
+The application should now be running on `http://localhost:5173` (or the port specified by Vite).
+
 ## 📚 API Documentation
 
-The GraphQL API documentation is available at `/graphql` when running the backend server in development mode. This provides an interactive GraphQL playground for testing queries and mutations.
-
-### Main Entity Types
-
-- User
-- Customer
-- Interaction
-- Job
+Interaction with backend services is handled through the Firebase SDK. Refer to the official Firebase documentation for details on Firestore and Firebase Authentication APIs.
 
 ## 🧪 Testing
-
-### Backend Tests
-
-```bash
-# Unit tests
-npm run test
-
-# E2E tests
-npm run test:e2e
-
-# Test coverage
-npm run test:cov
-```
 
 ### Frontend Tests
 
 ```bash
-# Run tests
+# Run tests (ensure your test setup is configured for Firebase, possibly with emulators)
 npm run test
 ```
 
 ## 🚀 Deployment
 
-### Backend Deployment
-
-1. Build the application:
-
-```bash
-npm run build
-```
-
-2. Set production environment variables
-3. Run the production server:
-
-```bash
-npm run start:prod
-```
-
 ### Frontend Deployment
 
-1. Build the application:
+1.  Build the application:
 
 ```bash
 npm run build
 ```
 
-2. Deploy the contents of the `dist` directory to your hosting service
+2.  Deploy the contents of the `frontend/dist` directory to your preferred hosting service (e.g., Firebase Hosting, Vercel, Netlify).
 
 ## 🔒 Security
 
-- JWT-based authentication
-- Password hashing with bcrypt
-- Role-based access control
-- Environment variable protection
-- GraphQL query complexity limits
+- Secure user authentication and authorization managed by Firebase Authentication.
+- Data security in Firestore is managed by Firebase Security Rules. Ensure you have appropriate rules configured in your `firestore.rules` file to protect your data.
+- Environment variables for Firebase configuration should be kept secure and not hardcoded directly into the source code (use `.env` files).
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+1.  Fork the repository
+2.  Create a feature branch
+3.  Commit your changes
+4.  Push to the branch
+5.  Create a Pull Request
 
 ## 👥 Authors
 
@@ -206,6 +138,7 @@ npm run build
 
 ## 🙏 Acknowledgments
 
-- NestJS team for the excellent framework
 - React team for the frontend framework
+- Vite team for the build tool
+- Firebase team for the backend platform
 - All contributors and maintainers
