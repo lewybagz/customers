@@ -1,0 +1,164 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isUserDoc(userId) {
+       // Ensure userId is a string before attempting exists/get
+       return userId is string && exists(/databases/$(database)/documents/users/$(userId));
+    }
+
+    function getUserData(userId) {
+       // Ensure isUserDoc is true before calling get
+       return get(/databases/$(database)/documents/users/$(userId)).data;
+    }
+
+    // NEW: Checks specifically for the superAdmin role
+    function isSuperAdmin() {
+      return isAuthenticated() &&
+             request.auth.uid != null && // Add null check for safety
+             isUserDoc(request.auth.uid) &&
+             getUserData(request.auth.uid).role == 'superAdmin';
+    }
+
+    // MODIFIED: Checks if the authenticated user has an admin role (OR superAdmin)
+    function isAdmin() {
+      // Check for superAdmin first as it implies admin privileges
+      return isSuperAdmin() || (
+             isAuthenticated() &&
+             request.auth.uid != null && // Add null check
+             isUserDoc(request.auth.uid) &&
+             getUserData(request.auth.uid).role == 'admin');
+    }
+
+    // Checks if the authenticated user has the 'goat' (installer) role
+    function isInstaller() {
+      return isAuthenticated() &&
+             request.auth.uid != null && // Add null check
+             isUserDoc(request.auth.uid) &&
+             getUserData(request.auth.uid).role == 'goat';
+    }
+
+    // Checks if the authenticated user owns the document based on userId matching auth uid
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Checks if the authenticated user belongs to the specified business via custom token claim
+    function belongsToBusiness(businessId) {
+      // SuperAdmin bypasses the businessId check
+      return isAuthenticated() &&
+             (isSuperAdmin() || (request.auth.token != null && request.auth.token.businessId == businessId));
+    }
+
+    // --- Root Level Collections ---
+
+    // MODIFIED: Allow any authenticated user CRUD operations
+    match /setupConfigs/{configId} {
+      allow read, write: if isAuthenticated(); // write includes create, update, delete
+    }
+
+    // MODIFIED: Allow any authenticated user CRUD operations
+    match /feedback/{feedbackId} {
+      allow read, write: if isAuthenticated(); // write includes create, update, delete
+    }
+
+    // NEW: Allow any authenticated user CRUD operations
+    match /customers/{customerId} {
+        allow read, write: if isAuthenticated(); // write includes create, update, delete
+    }
+
+    // Allow SuperAdmin full access, others read-only
+    match /businesses/{businessId} {
+      // SuperAdmin has full control
+      allow read, write, create, update, delete: if isSuperAdmin(); 
+      
+      // Allow anyone to create the business document (e.g., from setup form)
+      allow create: if true; 
+      
+      // Allow anyone to read (e.g., backend fetching logoUrl)
+      allow read: if true; 
+      
+      // Allow admins of this business to update it (e.g., change logo later)
+      // Note: belongsToBusiness might need adjustment if admin isn't immediately claimed.
+      // For the initial logo set during 'create', the 'create: if true' above covers it.
+      allow update: if isAdmin() && belongsToBusiness(businessId); 
+    }
+
+    // Allow SuperAdmin full access, others as before
+    match /invitations/{invitationId} {
+      allow read, write: if isSuperAdmin(); // SuperAdmin override
+      allow create: if isAdmin();
+      allow read: if true;
+      allow update: if resource.data.status == 'pending' && request.resource.data.status == 'used';
+    }
+
+    // Users collection rules
+    match /users/{userId} {
+      // Allow SuperAdmin full access FIRST
+      allow read, write, list, delete: if isSuperAdmin();
+
+      // Existing rules for others (applied if not SuperAdmin)
+      allow read: if isAuthenticated();
+      allow list: if isAdmin(); // Admins (which includes superAdmins via the function) can list
+      allow create: if isAdmin() ||
+                      (getAfter(/databases/$(database)/documents/users/$(userId)).data == null &&
+                       get(/databases/$(database)/documents/users).size() == 0) ||
+                      isOwner(userId) ||
+                      (isOwner(userId) && request.resource.data.invitationId != null &&
+                       exists(/databases/$(database)/documents/invitations/$(request.resource.data.invitationId)));
+      // Ensure resource.data.businessId exists before checking belongsToBusiness
+      allow update: if (isAdmin() && resource.data.businessId != null && belongsToBusiness(resource.data.businessId)) || isOwner(userId);
+      allow delete: if isAdmin();
+    }
+
+
+    // --- Business Data Structure ---
+
+    // --- Grant SuperAdmin blanket access to ALL subcollections within ANY business ---
+    // This is the most direct way to override permissions for superAdmin within business data
+    match /business_data/{businessId}/{document=**} {
+        allow read, write: if isSuperAdmin();
+    }
+    // --------------------------------------------------------------------------------
+
+    match /business_data/{businessId} {
+      // Allow reads on the business_data document itself? - Keep commented unless needed
+      // allow read: if isSuperAdmin() || true;
+
+      // --- Collections within Business Data (Specific rules for NON-SuperAdmins) ---
+      // SuperAdmins are already granted access by the recursive rule above.
+      // These rules define access for Admin, Installer, and general members.
+
+      function isMemberOfBusiness() {
+         return belongsToBusiness(businessId); // belongsToBusiness already handles SuperAdmin bypass
+      }
+
+      // ****** SIMPLIFIED PERMISSION MODEL ******
+      // Allow any business member full CRUD access to all collections
+      // All collections under business_data use the same permissions
+      match /{collection}/{docId} {
+        // DEBUG: Simplified rule condition
+        allow read, write, create, update, delete: if request.auth != null && request.auth.token.businessId == businessId;
+      }
+
+    } // End match /business_data/{businessId}
+
+    // --- Collection Group Rules ---
+
+    match /{path=**}/transactions/{transactionId} {
+       // Allow SuperAdmin or any authenticated user
+       allow read, list: if isSuperAdmin() || isAuthenticated();
+    }
+    
+    match /{path=**}/jobs/{jobId} {
+      allow read, list: if isSuperAdmin();
+    }
+
+  } // End match /databases/{database}/documents
+} // End service cloud.firestore 
