@@ -59,6 +59,16 @@ export default function CustomerForm({
 
   const hasPaid = watch("hasPaid");
 
+  const formatPhoneNumber = (phoneNumber: string) => {
+    if (!phoneNumber) return "";
+    const cleaned = phoneNumber.replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+    return phoneNumber;
+  };
+
   const onSubmit = async (data: CustomerFormData) => {
     try {
       if (isEditing && initialData?.id) {
@@ -207,7 +217,12 @@ export default function CustomerForm({
                 <input
                   type="tel"
                   id="phone"
-                  {...register("phone")}
+                  {...register("phone", {
+                    onChange: (e) => {
+                      const formatted = formatPhoneNumber(e.target.value);
+                      setValue("phone", formatted, { shouldValidate: true });
+                    },
+                  })}
                   className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
                     ${
                       errors.phone
@@ -341,14 +356,14 @@ export default function CustomerForm({
                   type="number"
                   id="price"
                   step="0.01"
+                  placeholder="0"
                   {...register("price", { valueAsNumber: true })}
                   className={`block w-full rounded-md shadow-sm sm:text-sm transition duration-150 ease-in-out bg-input border placeholder-muted-foreground text-foreground px-3 py-2
-                    ${
-                      errors.price
-                        ? "border-destructive text-destructive placeholder-destructive/70"
-                        : "border-border"
-                    }`}
-                  placeholder="199.99"
+    ${
+      errors.price
+        ? "border-destructive text-destructive placeholder-destructive/70"
+        : "border-border"
+    }`}
                   disabled={isSubmitting}
                 />
                 {errors.price && (
