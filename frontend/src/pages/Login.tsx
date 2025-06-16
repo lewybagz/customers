@@ -9,6 +9,7 @@ import {
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import logo from "/images/logo-no-text.png";
 
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
@@ -77,10 +78,12 @@ export default function Login() {
       <div className="max-w-md w-full space-y-8 relative z-10">
         {/* Logo/Brand Section */}
         <div className="text-center">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-tovuti-primary to-tovuti-primary/80 rounded-2xl shadow-2xl flex items-center justify-center mb-6 transform hover:scale-105 transition-transform duration-200">
-            <span className="text-2xl font-bold text-white font-aldrich">
-              CS
-            </span>
+          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-tovuti-primary to-foreground/70 rounded-2xl shadow-2xl flex items-center justify-center mb-6 transform hover:scale-105 transition-transform duration-200">
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <h2 className="text-center text-3xl sm:text-4xl font-bold bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
             {isSignup ? "Create your account" : "Welcome back"}
