@@ -7,6 +7,8 @@ import {
   orderBy,
   limit,
   Timestamp,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { auth } from "../lib/firebase";
 import { db } from "../lib/firebase";
@@ -71,10 +73,22 @@ export default function Dashboard() {
   });
   const [recentCustomers, setRecentCustomers] = useState<RecentCustomer[]>([]);
   const [recentFeedback, setRecentFeedback] = useState<RecentFeedback[]>([]);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const user = auth.currentUser;
+        if (user) {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            setUserName(userDocSnap.data().name);
+          } else {
+            setUserName(user.displayName || "User");
+          }
+        }
+
         const customersCollection = collection(db, "customers");
 
         // Get all customers
@@ -150,28 +164,31 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="animate-pulse space-y-6">
-        <div className="h-32 bg-muted-foreground/20 rounded-lg"></div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="animate-pulse space-y-8">
+        <div className="h-32 bg-gradient-to-r from-muted/50 to-muted/30 rounded-2xl"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="h-24 bg-muted-foreground/20 rounded-lg"
+              className="h-32 bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl"
             ></div>
           ))}
         </div>
-        <div className="h-64 bg-muted-foreground/20 rounded-lg"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 h-80 bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl"></div>
+          <div className="h-80 bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl"></div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-destructive/10 border-l-4 border-destructive p-4">
+      <div className="bg-gradient-to-r from-destructive/10 to-destructive/5 border-l-4 border-destructive p-6 rounded-xl">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg
-              className="h-5 w-5 text-destructive"
+              className="h-6 w-6 text-destructive"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -183,7 +200,7 @@ export default function Dashboard() {
             </svg>
           </div>
           <div className="ml-3">
-            <p className="text-sm text-destructive-foreground">
+            <p className="text-sm text-destructive-foreground font-medium">
               Error loading dashboard data
             </p>
           </div>
@@ -192,28 +209,30 @@ export default function Dashboard() {
     );
   }
 
-  const currentUser = auth.currentUser;
   const statsDisplay = [
     {
       name: "Total Customers",
       value: stats.total,
       icon: UsersIcon,
-      color: "text-squadspot-primary",
-      bgColor: "bg-card",
+      color: "text-tovuti-primary",
+      bgColor: "bg-white/80",
+      iconBg: "bg-tovuti-primary",
     },
     {
       name: "Active Customers",
       value: stats.active,
       icon: UserIcon,
-      color: "text-squadspot-primary",
-      bgColor: "bg-card",
+      color: "text-tovuti-primary",
+      bgColor: "bg-white/80",
+      iconBg: "bg-tovuti-primary",
     },
     {
       name: "New This Month",
       value: stats.newThisMonth,
       icon: ArrowTrendingUpIcon,
-      color: "text-squadspot-primary",
-      bgColor: "bg-card",
+      color: "text-tovuti-primary",
+      bgColor: "bg-white/80",
+      iconBg: "bg-tovuti-primary",
     },
   ];
 
@@ -222,7 +241,7 @@ export default function Dashboard() {
       case "fixed":
       case "completed":
       case "addressed":
-        return <CheckCircleIcon className="h-5 w-5 text-squadspot-primary" />;
+        return <CheckCircleIcon className="h-5 w-5 text-tovuti-primary" />;
       case "wont_fix":
       case "declined":
         return <XCircleIcon className="h-5 w-5 text-destructive" />;
@@ -247,11 +266,11 @@ export default function Dashboard() {
   const getPriorityColor = (priority: RecentFeedback["priority"]) => {
     switch (priority) {
       case "high":
-        return "text-destructive-foreground bg-destructive/20";
+        return "text-destructive-foreground bg-destructive/80 border-destructive/90";
       case "medium":
-        return "text-yellow-700 bg-yellow-100";
+        return "text-yellow-800 bg-yellow-400/80 border-yellow-400/90";
       case "low":
-        return "text-squadspot-primary/80 bg-squadspot-primary/10";
+        return "text-tovuti-primary bg-tovuti-primary/20 border-tovuti-primary/30";
     }
   };
 
@@ -269,13 +288,20 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">
-          Welcome back, {currentUser?.displayName || "User"}!
-        </h1>
-        <p className="text-muted-foreground">
-          Hope you been smashing that shit.
-        </p>
+      <header className="mb-8 bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-border/50 shadow-lg">
+        <div className="flex items-center space-x-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-tovuti-primary to-tovuti-primary/80 rounded-2xl flex items-center justify-center shadow-lg">
+            <UserIcon className="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Welcome back, {(userName || "User").split(" ")[0]}!
+            </h1>
+            <p className="text-gray-600 mt-1 text-lg">
+              Hope you been smashing that shit.
+            </p>
+          </div>
+        </div>
       </header>
 
       {/* Stats Cards */}
@@ -287,19 +313,21 @@ export default function Dashboard() {
           {statsDisplay.map((item) => (
             <div
               key={item.name}
-              className={`${item.bgColor} rounded-lg shadow p-6 flex items-start space-x-4`}
+              className={`${item.bgColor} rounded-2xl shadow-lg p-8 flex items-start space-x-6 border border-border/30 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
             >
               <div className="flex-shrink-0">
-                <item.icon
-                  className={`h-8 w-8 ${item.color}`}
-                  aria-hidden="true"
-                />
+                <div className={`${item.iconBg} p-3 rounded-xl shadow-lg`}>
+                  <item.icon
+                    className="h-8 w-8 text-white"
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
               <div>
-                <p className="text-sm font-medium text-card-foreground">
+                <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
                   {item.name}
                 </p>
-                <p className="text-2xl font-bold text-card-foreground">
+                <p className={`text-3xl font-bold ${item.color} mt-1`}>
                   {item.value}
                 </p>
               </div>
@@ -314,38 +342,43 @@ export default function Dashboard() {
           aria-labelledby="recent-customers-heading"
           className="lg:col-span-2"
         >
-          <div className="bg-card shadow rounded-lg overflow-hidden">
-            <div className="p-6">
+          <div className="bg-white/80 shadow-xl rounded-2xl overflow-hidden border border-border/50 backdrop-blur-sm">
+            <div className="p-8 border-b border-gray-200">
               <h2
                 id="recent-customers-heading"
-                className="text-lg font-medium text-card-foreground"
+                className="text-xl font-bold text-tovuti-primary"
               >
                 Recent Customers
               </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Latest customer additions to your database
+              </p>
             </div>
-            <div className="border-t border-border px-6 py-2">
+            <div className="px-8 py-4">
               {recentCustomers.length > 0 ? (
-                <ul role="list" className="divide-y divide-border">
+                <ul role="list" className="divide-y divide-gray-200">
                   {recentCustomers.map((customer) => (
-                    <li key={customer.id} className="py-4">
+                    <li key={customer.id} className="py-6">
                       <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
-                          <UserIcon className="h-8 w-8 rounded-full text-squadspot-primary" />
+                          <div className="w-12 h-12 bg-gradient-to-br from-tovuti-primary to-tovuti-primary/80 rounded-xl flex items-center justify-center shadow-lg">
+                            <UserIcon className="h-6 w-6 text-white" />
+                          </div>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-card-foreground truncate">
+                          <p className="text-sm font-semibold text-gray-900 truncate">
                             {customer.name}
                           </p>
-                          <p className="text-sm text-muted-foreground truncate">
+                          <p className="text-sm text-gray-500 truncate">
                             {customer.company}
                           </p>
                         </div>
                         <div>
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold border ${
                               customer.status === "active"
-                                ? "bg-squadspot-primary/10 text-squadspot-primary"
-                                : "bg-muted-foreground/10 text-muted-foreground"
+                                ? "bg-tovuti-primary/10 text-tovuti-primary border-tovuti-primary/30"
+                                : "bg-muted/20 text-muted-foreground border-muted/30"
                             }`}
                           >
                             {customer.status}
@@ -356,17 +389,33 @@ export default function Dashboard() {
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-muted-foreground py-4 text-center">
-                  No recent customers found.
-                </p>
+                <div className="text-center py-12">
+                  <UserIcon className="mx-auto h-12 w-12 text-gray-400" />
+                  <p className="text-sm text-gray-500 mt-2">
+                    No recent customers found.
+                  </p>
+                </div>
               )}
             </div>
-            <div className="p-4 border-t border-border text-sm">
+            <div className="p-6 border-t border-gray-200 bg-gray-50/50">
               <a
                 href="/customers"
-                className="font-medium text-squadspot-primary hover:text-squadspot-primary/90"
+                className="font-semibold text-tovuti-primary hover:text-tovuti-primary/80 transition-colors duration-200 flex items-center group"
               >
                 View all customers
+                <svg
+                  className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
               </a>
             </div>
           </div>
@@ -374,63 +423,87 @@ export default function Dashboard() {
 
         {/* Recent Feedback */}
         <section aria-labelledby="recent-feedback-heading">
-          <div className="bg-card shadow rounded-lg overflow-hidden">
-            <div className="p-6">
+          <div className="bg-white/80 shadow-xl rounded-2xl overflow-hidden border border-border/50 backdrop-blur-sm">
+            <div className="p-8 border-b border-gray-200">
               <h2
                 id="recent-feedback-heading"
-                className="text-lg font-medium text-card-foreground"
+                className="text-xl font-bold text-tovuti-primary"
               >
                 Recent Feedback
               </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Latest user submissions
+              </p>
             </div>
-            <div className="border-t border-border px-6 py-2">
+            <div className="px-8 py-4">
               {recentFeedback.length > 0 ? (
-                <ul role="list" className="divide-y divide-border">
+                <ul role="list" className="divide-y divide-gray-200">
                   {recentFeedback.map((feedback) => (
-                    <li key={feedback.id} className="py-4 space-y-2">
+                    <li key={feedback.id} className="py-6 space-y-3">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-card-foreground truncate">
+                        <p className="text-sm font-semibold text-gray-900 truncate pr-4">
                           {feedback.title}
                         </p>
                         {getStatusIcon(feedback.status)}
                       </div>
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <span>{feedback.businessName || "N/A"}</span>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span className="truncate">
+                          {feedback.businessName || "N/A"}
+                        </span>
                         <span
-                          className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(
+                          className={`px-2 py-1 rounded-lg text-xs font-semibold border ${getPriorityColor(
                             feedback.priority
                           )}`}
                         >
                           {feedback.priority}
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {getFeedbackTypeDisplay(feedback.type)} - Submitted:{" "}
-                        {feedback.createdAt.toDate().toLocaleDateString()}
-                      </p>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span className="bg-gray-100 px-2 py-1 rounded-lg">
+                          {getFeedbackTypeDisplay(feedback.type)}
+                        </span>
+                        <span>
+                          {feedback.createdAt.toDate().toLocaleDateString()}
+                        </span>
+                      </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-muted-foreground py-4 text-center">
-                  No recent feedback submitted.
-                </p>
+                <div className="text-center py-12">
+                  <DocumentMagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400" />
+                  <p className="text-sm text-gray-500 mt-2">
+                    No recent feedback submitted.
+                  </p>
+                </div>
               )}
             </div>
-            <div className="p-4 border-t border-border text-sm">
+            <div className="p-6 border-t border-gray-200 bg-gray-50/50">
               <a
                 href="/suggestions"
-                className="font-medium text-squadspot-primary hover:text-squadspot-primary/90"
+                className="font-semibold text-tovuti-primary hover:text-tovuti-primary/80 transition-colors duration-200 flex items-center group"
               >
                 View all feedback
+                <svg
+                  className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
               </a>
             </div>
           </div>
         </section>
       </div>
-      <div className="mt-8">
-        {" "}
-        {/* Or some other appropriate spacing */}
+
+      <div className="mt-12">
         <ProjectList />
       </div>
     </div>

@@ -13,6 +13,7 @@ import {
   LinkIcon,
   AdjustmentsHorizontalIcon,
   XMarkIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import Modal from "../components/Modal";
 import CustomerForm from "../components/CustomerForm";
@@ -203,10 +204,14 @@ export default function Customers() {
 
   if (loading) {
     return (
-      <div className="animate-pulse space-y-4">
-        <div className="h-12 bg-muted-foreground/20 rounded w-full"></div>
+      <div className="animate-pulse space-y-8">
+        <div className="h-32 bg-gradient-to-r from-muted/50 to-muted/30 rounded-2xl"></div>
+        <div className="h-20 bg-gradient-to-r from-muted/50 to-muted/30 rounded-2xl"></div>
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-20 bg-muted-foreground/20 rounded"></div>
+          <div
+            key={i}
+            className="h-20 bg-gradient-to-r from-muted/50 to-muted/30 rounded-xl"
+          ></div>
         ))}
       </div>
     );
@@ -214,11 +219,11 @@ export default function Customers() {
 
   if (error) {
     return (
-      <div className="bg-destructive/10 border-l-4 border-destructive p-4">
+      <div className="bg-gradient-to-r from-destructive/10 to-destructive/5 border-l-4 border-destructive p-6 rounded-xl">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg
-              className="h-5 w-5 text-destructive"
+              className="h-6 w-6 text-destructive"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -230,7 +235,7 @@ export default function Customers() {
             </svg>
           </div>
           <div className="ml-3">
-            <p className="text-sm text-destructive-foreground">
+            <p className="text-sm text-destructive-foreground font-medium">
               Error loading customers
             </p>
           </div>
@@ -240,20 +245,22 @@ export default function Customers() {
   }
 
   return (
-    <div className="space-y-6 bg-squadspot-secondary">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="sm:flex sm:items-center sm:justify-between bg-card shadow-md rounded-lg p-6 border border-border">
+      <div className="sm:flex sm:items-center sm:justify-between bg-gradient-to-br from-card to-card/80 shadow-xl rounded-2xl p-8 border border-border/50 backdrop-blur-sm">
         <div>
-          <h2 className="text-2xl font-bold text-card-foreground">Customers</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Manage your customer relationships
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
+            Customers
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            Manage your customer relationships and track their status
           </p>
         </div>
-        <div className="mt-4 sm:mt-0">
+        <div className="mt-6 sm:mt-0">
           <button
             type="button"
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-primary-foreground bg-squadspot-primary hover:bg-squadspot-primary/90 focus:outline-none"
+            className="inline-flex items-center px-6 py-3 border border-transparent shadow-lg text-sm font-semibold rounded-xl text-primary-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/90 hover:from-tovuti-primary/90 hover:to-tovuti-primary focus:outline-none focus:ring-2 focus:ring-tovuti-primary focus:ring-offset-2 transition-all duration-200 transform hover:scale-105"
           >
             <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             Add Customer
@@ -262,128 +269,136 @@ export default function Customers() {
       </div>
 
       {/* Search and Filters */}
-      <div className="p-4 bg-card shadow rounded-lg border border-border">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex-grow">
+      <div className="p-6 bg-gradient-to-br from-card to-card/80 shadow-lg rounded-2xl border border-border/50 backdrop-blur-sm">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="flex-grow relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
+            </div>
             <input
               type="text"
               placeholder="Search customers (name, email, company...)"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="block w-full px-4 py-2 border border-border rounded-md shadow-sm sm:text-sm bg-input text-foreground"
+              className="block w-full pl-10 pr-4 py-3 border border-tovuti-primary rounded-xl shadow-sm sm:text-sm bg-input/80 text-foreground placeholder-muted-foreground backdrop-blur-sm focus:ring-2 focus:ring-tovuti-primary focus:border-transparent transition-all duration-200"
             />
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-foreground bg-secondary hover:bg-secondary/80 focus:outline-none"
+            className="inline-flex items-center px-6 py-3 border border-tovuti-primary text-sm font-semibold rounded-xl shadow-sm text-foreground bg-tovuti-primary hover:from-tovuti-primary/80 hover:to-tovuti-primary backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-tovuti-primary transition-all duration-200 transform hover:scale-105"
           >
             <AdjustmentsHorizontalIcon className="mr-2 h-5 w-5" />
             {showFilters ? "Hide Filters" : "Show Filters"}
+            {Object.values(filters).some((v) => v !== "all") && (
+              <span className="ml-2 h-2 w-2 rounded-full bg-tovuti-primary animate-pulse"></span>
+            )}
           </button>
         </div>
 
         {showFilters && (
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div>
-              <label
-                htmlFor="status-filter"
-                className="block text-sm font-medium text-card-foreground"
-              >
-                Status
-              </label>
-              <select
-                id="status-filter"
-                value={filters.status}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    status: e.target.value as Filters["status"],
-                  })
-                }
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
-              >
-                <option value="all">All Statuses</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
+          <div className="mt-8 p-6 bg-gradient-to-r from-muted/20 to-muted/10 rounded-xl border border-border/30">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+              <div>
+                <label
+                  htmlFor="status-filter"
+                  className="block text-sm font-semibold text-card-foreground mb-2"
+                >
+                  Status
+                </label>
+                <select
+                  id="status-filter"
+                  value={filters.status}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      status: e.target.value as Filters["status"],
+                    })
+                  }
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="payment-status-filter"
+                  className="block text-sm font-semibold text-card-foreground mb-2"
+                >
+                  Payment Status
+                </label>
+                <select
+                  id="payment-status-filter"
+                  value={filters.paymentStatus}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      paymentStatus: e.target.value as Filters["paymentStatus"],
+                    })
+                  }
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
+                >
+                  <option value="all">All Payments</option>
+                  <option value="paid">Paid</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="price-range-filter"
+                  className="block text-sm font-semibold text-card-foreground mb-2"
+                >
+                  Price Range
+                </label>
+                <select
+                  id="price-range-filter"
+                  value={filters.priceRange}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      priceRange: e.target.value as Filters["priceRange"],
+                    })
+                  }
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
+                >
+                  <option value="all">All Prices</option>
+                  <option value="0-100">$0 - $100</option>
+                  <option value="101-500">$101 - $500</option>
+                  <option value="501-1000">$501 - $1000</option>
+                  <option value="1000+">$1000+</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="date-added-filter"
+                  className="block text-sm font-semibold text-card-foreground mb-2"
+                >
+                  Date Added
+                </label>
+                <select
+                  id="date-added-filter"
+                  value={filters.dateAdded}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      dateAdded: e.target.value as Filters["dateAdded"],
+                    })
+                  }
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
+                >
+                  <option value="all">Any Time</option>
+                  <option value="today">Today</option>
+                  <option value="this-week">This Week</option>
+                  <option value="this-month">This Month</option>
+                  <option value="this-year">This Year</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="payment-status-filter"
-                className="block text-sm font-medium text-card-foreground"
-              >
-                Payment Status
-              </label>
-              <select
-                id="payment-status-filter"
-                value={filters.paymentStatus}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    paymentStatus: e.target.value as Filters["paymentStatus"],
-                  })
-                }
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
-              >
-                <option value="all">All Payments</option>
-                <option value="paid">Paid</option>
-                <option value="pending">Pending</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="price-range-filter"
-                className="block text-sm font-medium text-card-foreground"
-              >
-                Price Range
-              </label>
-              <select
-                id="price-range-filter"
-                value={filters.priceRange}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    priceRange: e.target.value as Filters["priceRange"],
-                  })
-                }
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
-              >
-                <option value="all">All Prices</option>
-                <option value="0-100">$0 - $100</option>
-                <option value="101-500">$101 - $500</option>
-                <option value="501-1000">$501 - $1000</option>
-                <option value="1000+">$1000+</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="date-added-filter"
-                className="block text-sm font-medium text-card-foreground"
-              >
-                Date Added
-              </label>
-              <select
-                id="date-added-filter"
-                value={filters.dateAdded}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    dateAdded: e.target.value as Filters["dateAdded"],
-                  })
-                }
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
-              >
-                <option value="all">Any Time</option>
-                <option value="today">Today</option>
-                <option value="this-week">This Week</option>
-                <option value="this-month">This Month</option>
-                <option value="this-year">This Year</option>
-              </select>
-            </div>
-            <div className="col-span-full flex justify-end">
+            <div className="flex justify-end">
               <button
                 onClick={resetFilters}
-                className="text-sm font-medium text-squadspot-primary hover:text-squadspot-primary/90"
+                className="text-sm font-semibold text-tovuti-primary hover:text-tovuti-primary/80 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-tovuti-primary/10"
               >
                 Reset Filters
               </button>
@@ -393,72 +408,82 @@ export default function Customers() {
       </div>
 
       {/* Customer List/Table */}
-      <div className="bg-card shadow-lg rounded-lg overflow-hidden border border-border">
+      <div className="bg-gradient-to-br from-card to-card/80 shadow-xl rounded-2xl overflow-hidden border border-border/50 backdrop-blur-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-border">
-            <thead className="bg-muted/50">
-              <tr>
+          <table className="min-w-full divide-y divide-border/30 border border-border/30">
+            <thead className="bg-gradient-to-r from-muted/50 to-muted/30">
+              <tr className="divide-x divide-border/30">
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   Name
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   Contact
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   Company
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   Status
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   Price
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   Payment
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   Added
                 </th>
-                <th scope="col" className="relative px-6 py-3">
-                  <span className="sr-only">Edit</span>
+                <th scope="col" className="relative px-6 py-4">
+                  <span className="sr-only">Actions</span>
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-card divide-y divide-border">
+            <tbody className="bg-gradient-to-br from-card to-card/50">
               {filteredCustomers.length > 0 ? (
-                filteredCustomers.map((customer) => (
-                  <tr key={customer.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                filteredCustomers.map((customer, index) => (
+                  <tr
+                    key={customer.id}
+                    className={`hover:bg-muted/20 transition-colors duration-200 divide-x divide-border/30 ${
+                      index % 2 === 0 ? "bg-card/50" : "bg-card/30"
+                    }`}
+                  >
+                    <td className="px-6 py-5 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-card-foreground">
+                        <div className="w-10 h-10 bg-gradient-to-br from-tovuti-primary to-tovuti-primary/80 rounded-xl flex items-center justify-center shadow-lg mr-4">
+                          <span className="text-white font-semibold text-sm">
+                            {customer.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-card-foreground">
                             {customer.name}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-5 whitespace-nowrap">
                       <div className="text-sm text-muted-foreground">
                         {customer.email}
                       </div>
@@ -466,80 +491,82 @@ export default function Customers() {
                         {customer.phone}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-card-foreground">
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="text-sm font-medium text-card-foreground">
                         {customer.company}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-5 whitespace-nowrap">
                       <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        className={`px-3 py-1.5 inline-flex text-xs leading-5 font-bold rounded-xl border ${
                           customer.status === "active"
-                            ? "bg-squadspot-primary/10 text-squadspot-primary"
-                            : "bg-muted/20 text-muted-foreground"
+                            ? "bg-tovuti-primary/10 text-tovuti-primary border-tovuti-primary/30"
+                            : "bg-muted/20 text-muted-foreground border-muted/30"
                         }`}
                       >
                         {customer.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-card-foreground">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm font-semibold text-card-foreground">
                       ${customer.price.toFixed(2)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          customer.hasPaid
-                            ? "bg-squadspot-primary/10 text-squadspot-primary"
-                            : "bg-yellow-100 text-yellow-800" // Kept yellow for pending, can be themed
-                        }`}
-                      >
-                        {customer.hasPaid ? "Paid" : "Pending"}
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="flex flex-col space-y-1">
+                        <span
+                          className={`px-3 py-1.5 inline-flex text-xs leading-5 font-bold rounded-xl border w-fit ${
+                            customer.hasPaid
+                              ? "bg-tovuti-primary/10 text-tovuti-primary border-tovuti-primary/30"
+                              : "bg-yellow-100 text-yellow-800 border-yellow-300"
+                          }`}
+                        >
+                          {customer.hasPaid ? "Paid" : "Pending"}
+                        </span>
                         {customer.hasPaid && customer.paidDate && (
-                          <span className="ml-1 text-xs text-muted-foreground">
-                            (on{" "}
-                            {new Date(customer.paidDate).toLocaleDateString()})
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(customer.paidDate).toLocaleDateString()}
                           </span>
                         )}
-                      </span>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm text-muted-foreground">
                       {new Date(customer.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 pt-6 pb-4 whitespace-nowrap text-center text-sm font-medium flex items-center justify-center gap-2 h-full">
-                      {customer.softwareUrl && (
-                        <a
-                          href={customer.softwareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-squadspot-primary flex items-center"
-                          title="Open Software URL"
+                    <td className="px-6 py-5 whitespace-nowrap text-center text-sm font-medium">
+                      <div className="flex items-center justify-center gap-3">
+                        {customer.softwareUrl && (
+                          <a
+                            href={customer.softwareUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-tovuti-primary transition-colors duration-200 p-2 rounded-lg hover:bg-tovuti-primary/10"
+                            title="Open Software URL"
+                          >
+                            <LinkIcon className="h-5 w-5" />
+                          </a>
+                        )}
+                        <button
+                          onClick={() => handleEditClick(customer)}
+                          className="text-tovuti-primary hover:text-tovuti-primary/80 transition-colors duration-200 p-2 rounded-lg hover:bg-tovuti-primary/10"
                         >
-                          <LinkIcon className="h-5 w-5" />
-                        </a>
-                      )}
-                      <button
-                        onClick={() => handleEditClick(customer)}
-                        className="text-squadspot-primary hover:text-squadspot-primary/90 flex items-center"
-                      >
-                        <PencilIcon className="h-5 w-5" />
-                        <span className="sr-only">Edit {customer.name}</span>
-                      </button>
+                          <PencilIcon className="h-5 w-5" />
+                          <span className="sr-only">Edit {customer.name}</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan={8}
-                    className="px-6 py-12 text-center text-sm text-muted-foreground"
-                  >
-                    <XMarkIcon className="mx-auto h-12 w-12 text-muted-foreground" />
-                    <p className="mt-2">
-                      No customers found matching your criteria.
-                    </p>
-                    <p className="mt-1">
-                      Try adjusting your search or filters.
-                    </p>
+                  <td colSpan={8} className="px-6 py-16 text-center">
+                    <div className="flex flex-col items-center">
+                      <XMarkIcon className="h-16 w-16 text-muted-foreground/50 mb-4" />
+                      <p className="text-lg font-semibold text-muted-foreground mb-2">
+                        No customers found matching your criteria.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Try adjusting your search or filters.
+                      </p>
+                    </div>
                   </td>
                 </tr>
               )}

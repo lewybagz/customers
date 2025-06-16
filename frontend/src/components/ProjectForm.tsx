@@ -168,12 +168,12 @@ export default function ProjectForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Project Details Section */}
-      <div className="bg-card p-6 rounded-lg shadow-sm border border-border space-y-6">
-        <div>
-          <h3 className="text-lg font-medium leading-6 text-card-foreground">
+      <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
+        <div className="border-b border-tovuti-primary/20 pb-4">
+          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Project Details
           </h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             Core information about the project.
           </p>
         </div>
@@ -183,7 +183,7 @@ export default function ProjectForm({
           <div className="col-span-2 sm:col-span-1">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-card-foreground"
+              className="block text-sm font-semibold text-card-foreground mb-2"
             >
               Project Name <span className="text-destructive">*</span>
             </label>
@@ -191,16 +191,16 @@ export default function ProjectForm({
               type="text"
               id="name"
               {...register("name")}
-              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+              className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
                 errors.name
-                  ? "border-destructive"
-                  : "border-border focus:border-squadspot-primary"
+                  ? "border-destructive bg-destructive/5"
+                  : "border-tovuti-primary/50 hover:border-tovuti-primary"
               }`}
               disabled={isSubmitting}
               placeholder="E-commerce Platform"
             />
             {errors.name && (
-              <p className="mt-2 text-sm text-destructive">
+              <p className="mt-2 text-sm text-destructive font-medium">
                 {errors.name.message}
               </p>
             )}
@@ -210,17 +210,17 @@ export default function ProjectForm({
           <div className="col-span-2 sm:col-span-1">
             <label
               htmlFor="customerId"
-              className="block text-sm font-medium text-card-foreground"
+              className="block text-sm font-semibold text-card-foreground mb-2"
             >
               Customer <span className="text-destructive">*</span>
             </label>
             <select
               id="customerId"
               {...register("customerId")}
-              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+              className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
                 errors.customerId
-                  ? "border-destructive"
-                  : "border-border focus:border-squadspot-primary"
+                  ? "border-destructive bg-destructive/5"
+                  : "border-tovuti-primary/50 hover:border-tovuti-primary"
               }`}
               disabled={isSubmitting || isLoadingCustomers}
             >
@@ -237,7 +237,7 @@ export default function ProjectForm({
               ))}
             </select>
             {errors.customerId && (
-              <p className="mt-2 text-sm text-destructive">
+              <p className="mt-2 text-sm text-destructive font-medium">
                 {errors.customerId.message}
               </p>
             )}
@@ -248,7 +248,7 @@ export default function ProjectForm({
         <div className="col-span-2">
           <label
             htmlFor="description"
-            className="block text-sm font-medium text-card-foreground"
+            className="block text-sm font-semibold text-card-foreground mb-2"
           >
             Description (Optional)
           </label>
@@ -256,16 +256,16 @@ export default function ProjectForm({
             id="description"
             rows={3}
             {...register("description")}
-            className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+            className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent resize-none ${
               errors.description
-                ? "border-destructive"
-                : "border-border focus:border-squadspot-primary"
+                ? "border-destructive bg-destructive/5"
+                : "border-tovuti-primary/50 hover:border-tovuti-primary"
             }`}
             disabled={isSubmitting}
             placeholder="Brief overview of the project features and goals."
           />
           {errors.description && (
-            <p className="mt-2 text-sm text-destructive">
+            <p className="mt-2 text-sm text-destructive font-medium">
               {errors.description.message}
             </p>
           )}
@@ -273,9 +273,9 @@ export default function ProjectForm({
       </div>
 
       {/* Links & Media Section */}
-      <div className="bg-card p-6 rounded-lg shadow-sm border border-border space-y-6">
-        <div>
-          <h3 className="text-lg font-medium leading-6 text-card-foreground">
+      <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
+        <div className="border-b border-tovuti-primary/20 pb-4">
+          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Links & Media
           </h3>
         </div>
@@ -284,7 +284,7 @@ export default function ProjectForm({
           <div className="col-span-2 sm:col-span-1">
             <label
               htmlFor="projectUrl"
-              className="block text-sm font-medium text-card-foreground"
+              className="block text-sm font-semibold text-card-foreground mb-2"
             >
               Project URL
             </label>
@@ -292,16 +292,16 @@ export default function ProjectForm({
               type="url"
               id="projectUrl"
               {...register("projectUrl")}
-              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+              className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
                 errors.projectUrl
-                  ? "border-destructive"
-                  : "border-border focus:border-squadspot-primary"
+                  ? "border-destructive bg-destructive/5"
+                  : "border-tovuti-primary/50 hover:border-tovuti-primary"
               }`}
               disabled={isSubmitting}
               placeholder="https://project.example.com"
             />
             {errors.projectUrl && (
-              <p className="mt-2 text-sm text-destructive">
+              <p className="mt-2 text-sm text-destructive font-medium">
                 {errors.projectUrl.message}
               </p>
             )}
@@ -311,7 +311,7 @@ export default function ProjectForm({
           <div className="col-span-2 sm:col-span-1">
             <label
               htmlFor="imageUrl"
-              className="block text-sm font-medium text-card-foreground"
+              className="block text-sm font-semibold text-card-foreground mb-2"
             >
               Image URL (Optional)
             </label>
@@ -319,16 +319,16 @@ export default function ProjectForm({
               type="url"
               id="imageUrl"
               {...register("imageUrl")}
-              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+              className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
                 errors.imageUrl
-                  ? "border-destructive"
-                  : "border-border focus:border-squadspot-primary"
+                  ? "border-destructive bg-destructive/5"
+                  : "border-tovuti-primary/50 hover:border-tovuti-primary"
               }`}
               disabled={isSubmitting}
               placeholder="https://example.com/image.png"
             />
             {errors.imageUrl && (
-              <p className="mt-2 text-sm text-destructive">
+              <p className="mt-2 text-sm text-destructive font-medium">
                 {errors.imageUrl.message}
               </p>
             )}
@@ -337,9 +337,9 @@ export default function ProjectForm({
       </div>
 
       {/* Technical Details Section */}
-      <div className="bg-card p-6 rounded-lg shadow-sm border border-border space-y-6">
-        <div>
-          <h3 className="text-lg font-medium leading-6 text-card-foreground">
+      <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
+        <div className="border-b border-tovuti-primary/20 pb-4">
+          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Technical Details
           </h3>
         </div>
@@ -347,7 +347,7 @@ export default function ProjectForm({
         <div>
           <label
             htmlFor="technologies"
-            className="block text-sm font-medium text-card-foreground"
+            className="block text-sm font-semibold text-card-foreground mb-2"
           >
             Technologies (comma-separated, e.g., React, Firebase, Node.js)
           </label>
@@ -356,16 +356,16 @@ export default function ProjectForm({
             id="technologies"
             value={technologiesInput}
             onChange={(e) => setTechnologiesInput(e.target.value)}
-            className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+            className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
               errors.technologies
-                ? "border-destructive"
-                : "border-border focus:border-squadspot-primary"
+                ? "border-destructive bg-destructive/5"
+                : "border-tovuti-primary/50 hover:border-tovuti-primary"
             }`}
             disabled={isSubmitting}
             placeholder="React, Firebase, Stripe"
           />
           {errors.technologies && (
-            <p className="mt-2 text-sm text-destructive">
+            <p className="mt-2 text-sm text-destructive font-medium">
               {typeof errors.technologies.message === "string"
                 ? errors.technologies.message
                 : "Invalid technologies format."}
@@ -375,9 +375,9 @@ export default function ProjectForm({
       </div>
 
       {/* Status and Timeline Section */}
-      <div className="bg-card p-6 rounded-lg shadow-sm border border-border space-y-6">
-        <div>
-          <h3 className="text-lg font-medium leading-6 text-card-foreground">
+      <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
+        <div className="border-b border-tovuti-primary/20 pb-4">
+          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Status & Timeline
           </h3>
         </div>
@@ -386,17 +386,17 @@ export default function ProjectForm({
           <div className="col-span-1">
             <label
               htmlFor="status"
-              className="block text-sm font-medium text-card-foreground"
+              className="block text-sm font-semibold text-card-foreground mb-2"
             >
               Status <span className="text-destructive">*</span>
             </label>
             <select
               id="status"
               {...register("status")}
-              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+              className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
                 errors.status
-                  ? "border-destructive"
-                  : "border-border focus:border-squadspot-primary"
+                  ? "border-destructive bg-destructive/5"
+                  : "border-tovuti-primary/50 hover:border-tovuti-primary"
               }`}
               disabled={isSubmitting}
             >
@@ -407,7 +407,7 @@ export default function ProjectForm({
               ))}
             </select>
             {errors.status && (
-              <p className="mt-2 text-sm text-destructive">
+              <p className="mt-2 text-sm text-destructive font-medium">
                 {errors.status.message}
               </p>
             )}
@@ -417,7 +417,7 @@ export default function ProjectForm({
           <div className="col-span-1">
             <label
               htmlFor="startDate"
-              className="block text-sm font-medium text-card-foreground"
+              className="block text-sm font-semibold text-card-foreground mb-2"
             >
               Start Date (Optional)
             </label>
@@ -429,10 +429,10 @@ export default function ProjectForm({
                   id="startDate"
                   selected={field.value}
                   onChange={(date: Date | null) => field.onChange(date)}
-                  className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+                  className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
                     errors.startDate
-                      ? "border-destructive"
-                      : "border-border focus:border-squadspot-primary"
+                      ? "border-destructive bg-destructive/5"
+                      : "border-tovuti-primary/50 hover:border-tovuti-primary"
                   }`}
                   placeholderText="Select start date"
                   dateFormat="MM/dd/yyyy"
@@ -444,7 +444,7 @@ export default function ProjectForm({
               )}
             />
             {errors.startDate && (
-              <p className="mt-2 text-sm text-destructive">
+              <p className="mt-2 text-sm text-destructive font-medium">
                 {typeof errors.startDate.message === "string"
                   ? errors.startDate.message
                   : "Invalid date"}
@@ -456,7 +456,7 @@ export default function ProjectForm({
           <div className="col-span-1">
             <label
               htmlFor="endDate"
-              className="block text-sm font-medium text-card-foreground"
+              className="block text-sm font-semibold text-card-foreground mb-2"
             >
               End Date (Optional)
             </label>
@@ -468,10 +468,10 @@ export default function ProjectForm({
                   id="endDate"
                   selected={field.value}
                   onChange={(date: Date | null) => field.onChange(date)}
-                  className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm bg-input border placeholder-muted-foreground text-foreground px-3 py-2 ${
+                  className={`block w-full rounded-xl shadow-sm sm:text-sm bg-input/80 backdrop-blur-sm border placeholder-muted-foreground text-foreground px-4 py-3 transition duration-200 focus:ring-2 focus:ring-tovuti-primary focus:border-transparent ${
                     errors.endDate
-                      ? "border-destructive"
-                      : "border-border focus:border-squadspot-primary"
+                      ? "border-destructive bg-destructive/5"
+                      : "border-tovuti-primary/50 hover:border-tovuti-primary"
                   }`}
                   placeholderText="Select end date"
                   dateFormat="MM/dd/yyyy"
@@ -483,7 +483,7 @@ export default function ProjectForm({
               )}
             />
             {errors.endDate && (
-              <p className="mt-2 text-sm text-destructive">
+              <p className="mt-2 text-sm text-destructive font-medium">
                 {typeof errors.endDate.message === "string"
                   ? errors.endDate.message
                   : "Invalid date"}
@@ -494,14 +494,14 @@ export default function ProjectForm({
       </div>
 
       {/* Action Buttons */}
-      <div className="pt-5">
-        <div className="flex justify-end space-x-3">
+      <div className="pt-6 border-t border-border/30">
+        <div className="flex justify-end space-x-4">
           {onCancel && (
             <button
               type="button"
               onClick={onCancel}
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium rounded-md shadow-sm border border-border text-secondary-foreground bg-secondary hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-squadspot-primary focus:ring-offset-card disabled:opacity-50"
+              className="px-6 py-3 text-sm font-semibold rounded-xl shadow-sm border border-border text-secondary-foreground bg-gradient-to-r from-secondary to-secondary/80 hover:from-secondary/80 hover:to-secondary backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tovuti-primary focus:ring-offset-card disabled:opacity-50 transition-all duration-200 transform hover:scale-105"
             >
               Cancel
             </button>
@@ -509,7 +509,7 @@ export default function ProjectForm({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex justify-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-primary-foreground bg-squadspot-primary hover:bg-squadspot-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-squadspot-primary focus:ring-offset-card disabled:opacity-50"
+            className="inline-flex justify-center px-6 py-3 text-sm font-semibold rounded-xl shadow-lg text-primary-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/90 hover:from-tovuti-primary/90 hover:to-tovuti-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tovuti-primary focus:ring-offset-card disabled:opacity-50 transition-all duration-200 transform hover:scale-105"
           >
             {isSubmitting
               ? isEditing

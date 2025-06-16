@@ -4,32 +4,32 @@
 
 @layer base {
   :root {
-    /* Squad Spot Theme Colors */
-    --squadspot-primary: 142 76% 36%; /* #24B45B - Vibrant Green */
-    --squadspot-secondary: 220 13% 15%; /* #1E2128 - Dark Gray */
-    --squadspot-accent: 142 76% 36%; /* Using primary color */
-    --squadspot-neutral: 220 13% 91%; /* #E5E7EB - Light Gray for text */
+    /* New Theme Colors from Project Config */
+    --tovuti-primary: 217 91% 60%; /* #3b82f6 - Blue */
+    --tovuti-secondary: 215 28% 17%; /* #1e293b - Dark Gray */
+    --tovuti-accent: 188 95% 43%; /* #06b6d4 - Cyan */
+    --tovuti-neutral: 210 40% 96%; /* #f1f5f9 - Light Gray */
 
     /* System Colors */
-    --background: 220 13% 10%; /* #15171C - Deep Dark Background */
-    --foreground: 220 13% 91%; /* #E5E7EB - Light Gray Text */
-    --card: 220 13% 13%; /* #1A1C23 - Slightly Lighter than Background */
-    --card-foreground: 220 13% 91%;
-    --popover: 220 13% 13%;
-    --popover-foreground: 220 13% 91%;
-    --primary: var(--squadspot-primary);
+    --background: 222 47% 11%; /* #0f172a - Deep Dark Background */
+    --foreground: 210 40% 98%; /* #f8fafc - Very Light Gray Text */
+    --card: 215 28% 17%; /* #1e293b - Slightly Lighter than Background */
+    --card-foreground: 210 40% 98%;
+    --popover: 215 28% 17%;
+    --popover-foreground: 210 40% 98%;
+    --primary: var(--tovuti-primary);
     --primary-foreground: 0 0% 100%; /* Pure white text for buttons */
-    --secondary: var(--squadspot-secondary);
-    --secondary-foreground: 220 13% 91%;
-    --muted: 220 13% 16%; /* #1E2128 - Muted Dark Gray */
-    --muted-foreground: 220 13% 70%;
-    --accent: var(--squadspot-accent);
+    --secondary: var(--tovuti-secondary);
+    --secondary-foreground: 210 40% 98%;
+    --muted: 215 28% 17%; /* #1e293b - Muted Dark Gray */
+    --muted-foreground: 210 40% 96%; /* #f1f5f9 - Muted Light Gray */
+    --accent: var(--tovuti-accent);
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 60%; /* #ef4444 */
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 16%;
-    --input: 220 13% 16%;
-    --ring: var(--squadspot-primary);
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: var(--tovuti-primary);
     --radius: 0.5rem;
     --heading-font: "Aldrich", sans-serif;
   }

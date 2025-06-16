@@ -18,6 +18,7 @@ import {
   CheckIcon,
   ArrowPathIcon,
   QuestionMarkCircleIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import Modal from "../components/Modal";
 import { toast } from "react-hot-toast";
@@ -212,7 +213,7 @@ export default function Suggestions() {
       case "fixed":
       case "completed":
       case "addressed":
-        return <CheckCircleIcon className="h-5 w-5 text-squadspot-primary" />;
+        return <CheckCircleIcon className="h-5 w-5 text-tovuti-primary" />;
       case "wont_fix":
       case "declined":
         return <XCircleIcon className="h-5 w-5 text-destructive" />;
@@ -237,11 +238,11 @@ export default function Suggestions() {
   const getPriorityColor = (priority: Suggestion["priority"]) => {
     switch (priority) {
       case "high":
-        return "text-destructive-foreground bg-destructive/20";
+        return "text-destructive-foreground bg-destructive/20 border-destructive/30";
       case "medium":
-        return "text-yellow-700 bg-yellow-100";
+        return "text-yellow-700 bg-yellow-100 border-yellow-300";
       case "low":
-        return "text-squadspot-primary/80 bg-squadspot-primary/10";
+        return "text-tovuti-primary/80 bg-tovuti-primary/10 border-tovuti-primary/30";
     }
   };
 
@@ -312,14 +313,14 @@ export default function Suggestions() {
 
   if (loading) {
     return (
-      <div className="animate-pulse p-6 space-y-4">
-        <div className="h-10 bg-muted-foreground/20 rounded w-1/3"></div>
-        <div className="h-8 bg-muted-foreground/20 rounded w-1/2"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      <div className="animate-pulse p-8 space-y-8">
+        <div className="h-32 bg-gradient-to-r from-muted/50 to-muted/30 rounded-2xl"></div>
+        <div className="h-20 bg-gradient-to-r from-muted/50 to-muted/30 rounded-2xl"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="h-40 bg-muted-foreground/20 rounded-lg"
+              className="h-64 bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl"
             ></div>
           ))}
         </div>
@@ -329,16 +330,16 @@ export default function Suggestions() {
 
   if (error) {
     return (
-      <div className="m-6 bg-destructive/10 border-l-4 border-destructive p-4">
+      <div className="m-8 bg-gradient-to-r from-destructive/10 to-destructive/5 border-l-4 border-destructive p-6 rounded-xl">
         <div className="flex">
           <div className="flex-shrink-0">
             <XCircleIcon
-              className="h-5 w-5 text-destructive"
+              className="h-6 w-6 text-destructive"
               aria-hidden="true"
             />
           </div>
           <div className="ml-3">
-            <p className="text-sm text-destructive-foreground">
+            <p className="text-sm text-destructive-foreground font-medium">
               Error loading suggestions: {error.message}
             </p>
           </div>
@@ -348,41 +349,44 @@ export default function Suggestions() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-transparent shadow-sm border-b border-border sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-gradient-to-br from-card to-card/80 shadow-xl border border-border/50 sticky top-0 z-10 backdrop-blur-sm rounded-2xl mb-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-card-foreground">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
                 User Suggestions & Feedback
               </h1>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-2 text-muted-foreground">
                 Browse, filter, and manage feedback submitted by users.
               </p>
             </div>
           </div>
 
           {/* Search and Filter Toggle */}
-          <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex-grow max-w-xl">
+          <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="flex-grow max-w-2xl relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
+              </div>
               <input
                 type="text"
                 placeholder="Search by title, description, user..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full px-4 py-2 border border-border rounded-md shadow-sm sm:text-sm bg-input text-foreground"
+                className="block w-full pl-10 pr-4 py-3 border border-tovuti-primary rounded-xl shadow-sm sm:text-sm bg-input/80 text-foreground placeholder-muted-foreground backdrop-blur-sm focus:ring-2 focus:ring-tovuti-primary focus:border-transparent transition-all duration-200"
               />
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-foreground bg-secondary hover:bg-secondary/80 focus:outline-none whitespace-nowrap"
+              className="inline-flex items-center justify-center px-6 py-3 border border-tovuti-primary text-sm font-semibold rounded-xl shadow-sm text-foreground bg-tovuti-primary hover:from-tovuti-primary/80 hover:to-tovuti-primary backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-tovuti-primary transition-all duration-200 transform hover:scale-105 whitespace-nowrap"
             >
               <FunnelIcon className="mr-2 h-5 w-5" />
               {showFilters ? "Hide Filters" : "Show Filters"}
               {Object.values(filters).some((v) => v !== "all") &&
                 !showFilters && (
-                  <span className="ml-2 h-2 w-2 rounded-full bg-squadspot-primary"></span>
+                  <span className="ml-2 h-2 w-2 rounded-full bg-tovuti-primary animate-pulse"></span>
                 )}
             </button>
           </div>
@@ -391,14 +395,14 @@ export default function Suggestions() {
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="bg-card shadow-md border-b border-border p-4 sm:p-6">
+        <div className="bg-gradient-to-br from-card to-card/80 shadow-lg border border-border/50 rounded-2xl p-8 mb-8 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
               {/* Type Filter */}
               <div>
                 <label
                   htmlFor="type-filter"
-                  className="block text-sm font-medium text-muted-foreground"
+                  className="block text-sm font-semibold text-muted-foreground mb-2"
                 >
                   Type
                 </label>
@@ -411,7 +415,7 @@ export default function Suggestions() {
                       type: e.target.value as Filters["type"],
                     })
                   }
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
                 >
                   <option value="all">All Types</option>
                   <option value="feature_request">Feature Request</option>
@@ -423,7 +427,7 @@ export default function Suggestions() {
               <div>
                 <label
                   htmlFor="priority-filter"
-                  className="block text-sm font-medium text-muted-foreground"
+                  className="block text-sm font-semibold text-muted-foreground mb-2"
                 >
                   Priority
                 </label>
@@ -436,7 +440,7 @@ export default function Suggestions() {
                       priority: e.target.value as Filters["priority"],
                     })
                   }
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
                 >
                   <option value="all">All Priorities</option>
                   <option value="low">Low</option>
@@ -448,7 +452,7 @@ export default function Suggestions() {
               <div>
                 <label
                   htmlFor="status-filter-suggestions"
-                  className="block text-sm font-medium text-muted-foreground"
+                  className="block text-sm font-semibold text-muted-foreground mb-2"
                 >
                   Status
                 </label>
@@ -461,7 +465,7 @@ export default function Suggestions() {
                       status: e.target.value as Filters["status"],
                     })
                   }
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
                 >
                   <option value="all">All Statuses</option>
                   <option value="pending">Pending</option>
@@ -478,7 +482,7 @@ export default function Suggestions() {
               <div>
                 <label
                   htmlFor="date-range-filter"
-                  className="block text-sm font-medium text-muted-foreground"
+                  className="block text-sm font-semibold text-muted-foreground mb-2"
                 >
                   Date Range
                 </label>
@@ -491,7 +495,7 @@ export default function Suggestions() {
                       dateRange: e.target.value as Filters["dateRange"],
                     })
                   }
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-border focus:outline-none sm:text-sm rounded-md bg-input text-foreground"
+                  className="block w-full pl-3 pr-10 py-3 text-base border-border focus:outline-none focus:ring-2 focus:ring-tovuti-primary sm:text-sm rounded-xl bg-input/80 text-foreground backdrop-blur-sm"
                 >
                   <option value="all">All Time</option>
                   <option value="today">Today</option>
@@ -503,7 +507,7 @@ export default function Suggestions() {
             <div className="flex justify-end">
               <button
                 onClick={resetFilters}
-                className="text-sm font-medium text-squadspot-primary hover:text-squadspot-primary/90"
+                className="text-sm font-semibold text-tovuti-primary hover:text-tovuti-primary/80 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-tovuti-primary/10"
               >
                 Reset Filters
               </button>
@@ -513,49 +517,53 @@ export default function Suggestions() {
       )}
 
       {/* Suggestions Grid */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 pb-8">
         {filteredSuggestions.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredSuggestions.map((suggestion) => (
               <div
                 key={suggestion.id}
-                className="bg-card shadow-lg rounded-lg p-6 flex flex-col justify-between border border-border hover:shadow-xl transition-shadow duration-200 cursor-pointer"
+                className="bg-gradient-to-br from-card to-card/80 shadow-xl rounded-2xl p-8 flex flex-col justify-between border border-border/50 hover:shadow-2xl transition-all duration-300 cursor-pointer backdrop-blur-sm transform hover:scale-105 hover:-translate-y-1"
                 onClick={() => setSelectedSuggestion(suggestion)}
               >
                 <div>
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-card-foreground">
+                  <div className="flex items-start justify-between mb-4">
+                    <h3 className="text-lg font-bold text-card-foreground line-clamp-2">
                       {suggestion.title}
                     </h3>
-                    {getStatusIcon(suggestion.status)}
+                    <div className="ml-3 flex-shrink-0">
+                      {getStatusIcon(suggestion.status)}
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground mb-1">
-                    Type: {suggestion.type.replace("_", " ")}
-                  </p>
-                  <p
-                    className={`text-xs font-medium px-2 py-0.5 rounded-full inline-block mb-3 ${getPriorityColor(
-                      suggestion.priority
-                    )}`}
-                  >
-                    Priority: {suggestion.priority}
-                  </p>
-                  <p className="text-sm text-muted-foreground line-clamp-3 mb-3">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-xs text-muted-foreground bg-muted/30 px-2 py-1 rounded-lg font-medium">
+                      {suggestion.type.replace("_", " ")}
+                    </span>
+                    <span
+                      className={`text-xs font-bold px-3 py-1.5 rounded-xl border ${getPriorityColor(
+                        suggestion.priority
+                      )}`}
+                    >
+                      {suggestion.priority}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground line-clamp-4 mb-4 leading-relaxed">
                     {suggestion.description}
                   </p>
                 </div>
-                <div className="mt-auto pt-3 border-t border-border">
+                <div className="mt-auto pt-4 border-t border-border/30">
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>
+                    <span className="font-medium truncate">
                       {suggestion.userName ||
                         suggestion.userEmail ||
                         "Anonymous"}
                     </span>
-                    <span>
+                    <span className="bg-muted/30 px-2 py-1 rounded-lg">
                       {suggestion.createdAt.toDate().toLocaleDateString()}
                     </span>
                   </div>
                   {suggestion.businessName && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-2 bg-tovuti-primary/10 px-2 py-1 rounded-lg">
                       Business: {suggestion.businessName}
                     </p>
                   )}
@@ -564,14 +572,16 @@ export default function Suggestions() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <DocumentMagnifyingGlassIcon className="mx-auto h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-2 text-lg font-medium text-foreground">
-              No suggestions found
-            </h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Try adjusting your search or filter criteria.
-            </p>
+          <div className="text-center py-20">
+            <div className="bg-gradient-to-br from-muted/20 to-muted/10 rounded-2xl p-12 max-w-md mx-auto">
+              <DocumentMagnifyingGlassIcon className="mx-auto h-16 w-16 text-muted-foreground/50 mb-4" />
+              <h3 className="text-xl font-bold text-foreground mb-2">
+                No suggestions found
+              </h3>
+              <p className="text-muted-foreground">
+                Try adjusting your search or filter criteria.
+              </p>
+            </div>
           </div>
         )}
       </main>
@@ -583,31 +593,37 @@ export default function Suggestions() {
           onClose={() => setSelectedSuggestion(null)}
           title={`Suggestion: ${selectedSuggestion.title}`}
         >
-          <div className="space-y-6 text-sm">
-            <div className="bg-muted/20 p-4 rounded-md">
-              <h4 className="font-semibold text-foreground mb-2">Details</h4>
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+          <div className="space-y-8 text-sm">
+            <div className="bg-gradient-to-r from-muted/20 to-muted/10 p-6 rounded-xl border border-border/30">
+              <h4 className="font-bold text-foreground mb-4 text-lg">
+                Details
+              </h4>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                 <div>
-                  <dt className="font-medium text-muted-foreground">Type</dt>
-                  <dd className="text-foreground">
+                  <dt className="font-semibold text-muted-foreground">Type</dt>
+                  <dd className="text-foreground mt-1">
                     {selectedSuggestion.type.replace("_", " ")}
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-muted-foreground">
+                  <dt className="font-semibold text-muted-foreground">
                     Priority
                   </dt>
-                  <dd
-                    className={`px-2 py-0.5 rounded-full inline-block text-xs font-medium ${getPriorityColor(
-                      selectedSuggestion.priority
-                    )}`}
-                  >
-                    {selectedSuggestion.priority}
+                  <dd className="mt-1">
+                    <span
+                      className={`px-3 py-1.5 rounded-xl inline-block text-xs font-bold border ${getPriorityColor(
+                        selectedSuggestion.priority
+                      )}`}
+                    >
+                      {selectedSuggestion.priority}
+                    </span>
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-muted-foreground">Status</dt>
-                  <dd className="flex items-center">
+                  <dt className="font-semibold text-muted-foreground">
+                    Status
+                  </dt>
+                  <dd className="flex items-center mt-1">
                     {getStatusIcon(selectedSuggestion.status)}
                     <span className="ml-2 text-foreground capitalize">
                       {selectedSuggestion.status.replace(/_/g, " ")}
@@ -615,10 +631,10 @@ export default function Suggestions() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-muted-foreground">
+                  <dt className="font-semibold text-muted-foreground">
                     Submitted
                   </dt>
-                  <dd className="text-foreground">
+                  <dd className="text-foreground mt-1">
                     {selectedSuggestion.createdAt.toDate().toLocaleString()}
                   </dd>
                 </div>
@@ -627,47 +643,49 @@ export default function Suggestions() {
 
             {selectedSuggestion.description && (
               <div>
-                <h4 className="font-semibold text-foreground mb-1">
+                <h4 className="font-bold text-foreground mb-3 text-lg">
                   Description
                 </h4>
-                <p className="text-muted-foreground whitespace-pre-wrap">
-                  {selectedSuggestion.description}
-                </p>
+                <div className="bg-gradient-to-r from-muted/10 to-muted/5 p-4 rounded-xl border border-border/30">
+                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                    {selectedSuggestion.description}
+                  </p>
+                </div>
               </div>
             )}
 
             {(selectedSuggestion.userName || selectedSuggestion.userEmail) && (
-              <div className="bg-muted/20 p-4 rounded-md">
-                <h4 className="font-semibold text-foreground mb-2">
+              <div className="bg-gradient-to-r from-muted/20 to-muted/10 p-6 rounded-xl border border-border/30">
+                <h4 className="font-bold text-foreground mb-4 text-lg">
                   User Info
                 </h4>
-                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                   {selectedSuggestion.userName && (
                     <div>
-                      <dt className="font-medium text-muted-foreground">
+                      <dt className="font-semibold text-muted-foreground">
                         Name
                       </dt>
-                      <dd className="text-foreground">
+                      <dd className="text-foreground mt-1">
                         {selectedSuggestion.userName}
                       </dd>
                     </div>
                   )}
                   {selectedSuggestion.userEmail && (
                     <div>
-                      <dt className="font-medium text-muted-foreground">
+                      <dt className="font-semibold text-muted-foreground">
                         Email
                       </dt>
-                      <dd className="text-foreground">
+                      <dd className="text-foreground mt-1">
                         {selectedSuggestion.userEmail}
                       </dd>
                     </div>
                   )}
                   {selectedSuggestion.userRole && (
                     <div>
-                      <dt className="font-medium text-muted-foreground">
+                      <dt className="font-semibold text-muted-foreground">
                         Role
                       </dt>
-                      <dd className="text-foreground">
+                      <dd className="text-foreground mt-1">
                         {selectedSuggestion.userRole}
                       </dd>
                     </div>
@@ -677,8 +695,10 @@ export default function Suggestions() {
             )}
 
             {selectedSuggestion.businessName && (
-              <div className="bg-muted/20 p-4 rounded-md">
-                <h4 className="font-semibold text-foreground mb-1">Business</h4>
+              <div className="bg-gradient-to-r from-tovuti-primary/10 to-tovuti-primary/5 p-6 rounded-xl border border-tovuti-primary/20">
+                <h4 className="font-bold text-foreground mb-2 text-lg">
+                  Business
+                </h4>
                 <p className="text-muted-foreground">
                   {selectedSuggestion.businessName} (ID:{" "}
                   {selectedSuggestion.businessId || "N/A"})
@@ -689,7 +709,7 @@ export default function Suggestions() {
             {selectedSuggestion.screenshotUrls &&
               selectedSuggestion.screenshotUrls.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">
+                  <h4 className="font-bold text-foreground mb-4 text-lg">
                     Screenshots
                   </h4>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -699,10 +719,10 @@ export default function Suggestions() {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block border border-border rounded-lg overflow-hidden hover:opacity-80 transition-opacity"
+                        className="block border border-border rounded-xl overflow-hidden hover:opacity-80 transition-opacity shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
                         <img
-                          src={url}
+                          src={url || "/placeholder.svg"}
                           alt={`Screenshot ${index + 1}`}
                           className="w-full h-auto object-cover aspect-video"
                         />
@@ -714,20 +734,20 @@ export default function Suggestions() {
 
             {selectedSuggestion.systemInfo && (
               <div>
-                <h4 className="font-semibold text-foreground mb-2">
+                <h4 className="font-bold text-foreground mb-4 text-lg">
                   System Info
                 </h4>
-                <pre className="text-xs bg-muted/30 p-3 rounded-md overflow-x-auto text-muted-foreground">
+                <pre className="text-xs bg-gradient-to-r from-muted/30 to-muted/20 p-4 rounded-xl overflow-x-auto text-muted-foreground border border-border/30 font-mono">
                   {JSON.stringify(selectedSuggestion.systemInfo, null, 2)}
                 </pre>
               </div>
             )}
 
-            <div className="mt-6 pt-4 border-t border-border">
-              <h4 className="font-semibold text-foreground mb-2">
+            <div className="pt-6 border-t border-border/30">
+              <h4 className="font-bold text-foreground mb-4 text-lg">
                 Update Status
               </h4>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {getStatusOptions(selectedSuggestion.type).map(
                   (statusOption) => (
                     <button
@@ -741,11 +761,11 @@ export default function Suggestions() {
                       disabled={
                         selectedSuggestion.status === statusOption.value
                       }
-                      className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors
+                      className={`px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 transform hover:scale-105
                       ${
                         selectedSuggestion.status === statusOption.value
-                          ? "bg-squadspot-primary text-primary-foreground cursor-not-allowed"
-                          : "bg-secondary text-secondary-foreground hover:bg-squadspot-primary/80 hover:text-primary-foreground"
+                          ? "bg-tovuti-primary text-primary-foreground cursor-not-allowed shadow-lg"
+                          : "bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:from-tovuti-primary/80 hover:to-tovuti-primary hover:text-primary-foreground shadow-md hover:shadow-lg"
                       }`}
                     >
                       {statusOption.label}

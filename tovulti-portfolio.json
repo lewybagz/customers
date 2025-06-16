@@ -1,0 +1,75 @@
+{
+  "id": "clientsync",
+  "title": "ClientSync",
+  "subtitle": "A comprehensive solution for managing customer relationships and projects.",
+  "description": "This project is a full-stack web application designed to help businesses manage their customer interactions, track ongoing projects, and maintain a centralized database of client information. Built with a modern tech stack, it provides a seamless and reactive user experience for efficient customer relationship management.",
+  "longDescription": "ClientSync is a robust platform developed to streamline client and project management for small to medium-sized businesses. The core purpose of this application is to replace scattered spreadsheets and disparate tools with a single, unified system. It allows users to securely manage user access, maintain detailed customer profiles, track every interaction from lead to active client, and oversee project lifecycles. The system is built on a scalable architecture using React and Vite for a high-performance frontend, and leverages Firebase for backend services, including secure authentication and a real-time Firestore database. This choice of technology ensures reliability, scalability, and rapid development. The impact on a business is significant, providing a clear overview of the customer pipeline, improving team collaboration, and ensuring that no client or project detail is lost.",
+  "category": "business",
+  "businessValue": [
+    "Centralized customer data for a single source of truth.",
+    "Streamlined project tracking from initiation to completion.",
+    "Improved team collaboration and data accessibility."
+  ],
+  "keyFeatures": [
+    "Secure user authentication and role-based access control.",
+    "Comprehensive customer profile management with status tracking.",
+    "Detailed project management with scope, status, and deadlines."
+  ],
+  "images": [
+    {
+      "url": "PLACEHOLDER_URL",
+      "alt": "Dashboard view of ClientSync",
+      "type": "screenshot"
+    },
+    {
+      "url": "PLACEHOLDER_URL",
+      "alt": "Customer profile page",
+      "type": "screenshot"
+    },
+    {
+      "url": "PLACEHOLDER_URL",
+      "alt": "Project management interface",
+      "type": "screenshot"
+    }
+  ],
+  "liveUrl": "PLACEHOLDER_URL",
+  "githubUrl": "PLACEHOLDER_URL",
+  "featured": false,
+  "completionDate": "2024-08-01",
+  "duration": "8 weeks",
+  "technologies": [
+    { "name": "React", "icon": "PLACEHOLDER" },
+    { "name": "TypeScript", "icon": "PLACEHOLDER" },
+    { "name": "Vite", "icon": "PLACEHOLDER" },
+    { "name": "TailwindCSS", "icon": "PLACEHOLDER" },
+    { "name": "Firebase", "icon": "PLACEHOLDER" },
+    { "name": "Zustand", "icon": "PLACEHOLDER" },
+    { "name": "React Hook Form", "icon": "PLACEHOLDER" },
+    { "name": "Zod", "icon": "PLACEHOLDER" }
+  ],
+  "client": {
+    "name": "Tovulti LLC",
+    "industry": "Software Development",
+    "logo": "PLACEHOLDER_URL"
+  },
+  "challenge": "The primary challenge was to create a highly responsive and real-time system for managing customer data and projects, replacing inefficient spreadsheet-based methods. The solution needed to be secure, scalable, and provide a user-friendly interface for non-technical users.",
+  "solution": "We developed a single-page application using React and Vite for a fast, modern user experience. Firebase was chosen for the backend to handle authentication and provide a real-time, NoSQL database with Firestore. This BaaS approach accelerated development and ensured scalability. We implemented strict data validation using Zod and streamlined form management with React Hook Form to ensure data integrity and a smooth UI.",
+  "results": [
+    {
+      "metric": "Data Entry Time",
+      "value": "40%",
+      "description": "Reduction in time spent on manual customer and project data entry."
+    },
+    {
+      "metric": "Data Accessibility",
+      "value": "100%",
+      "description": "Centralized data access for all team members, improving collaboration."
+    }
+  ],
+  "testimonial": {
+    "text": "REQUIRES_CLIENT_INPUT",
+    "author": "Client Name",
+    "position": "Client Title",
+    "company": "Tovulti LLC"
+  }
+}

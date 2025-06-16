@@ -28,27 +28,32 @@ export default function Header() {
 
   const getLinkClass = (path: string) =>
     location.pathname === path
-      ? "border-squadspot-primary text-squadspot-primary bg-secondary/60"
-      : "border-transparent text-muted-foreground hover:border-squadspot-primary hover:text-squadspot-primary hover:bg-secondary/40 transition-colors";
+      ? "border-tovuti-primary text-tovuti-primary bg-tovuti-primary/10 shadow-sm"
+      : "border-transparent text-muted-foreground hover:border-tovuti-primary hover:text-tovuti-primary hover:bg-tovuti-primary/5 transition-all duration-200";
 
   return (
-    <header className="bg-secondary text-secondary-foreground shadow-lg sticky top-0 z-30">
+    <header className="bg-gradient-to-r from-secondary via-secondary to-secondary/95 text-secondary-foreground shadow-xl sticky top-0 py-3 z-30 backdrop-blur-sm border-b border-tovuti-primary/20">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+        <div className="flex justify-between h-18 items-center">
           {/* Logo/Brand */}
-          <div className="flex items-center flex-shrink-0">
-            <span className="text-2xl font-bold tracking-tight text-squadspot-primary font-aldrich select-none">
+          <Link to="/dashboard" className="flex items-center flex-shrink-0">
+            <img
+              className="h-10 w-auto"
+              src="/images/logo-no-text.png"
+              alt="ClientSync logo"
+            />
+            <span className="ml-3 text-2xl font-bold tracking-tight text-tovuti-primary font-aldrich select-none">
               ClientSync
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex md:items-center md:space-x-2 lg:space-x-6">
+          <div className="hidden md:flex md:items-center md:space-x-1 lg:space-x-2">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`inline-flex items-center px-3 py-2 rounded-md border-b-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-squadspot-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary ${getLinkClass(
+                className={`inline-flex items-center px-4 py-3 rounded-xl border-b-2 text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-tovuti-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary transform hover:scale-105 transition-all duration-200 ${getLinkClass(
                   link.path
                 )}`}
                 tabIndex={0}
@@ -62,7 +67,7 @@ export default function Header() {
           <div className="hidden md:flex md:items-center">
             <button
               onClick={handleLogout}
-              className="ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-squadspot-primary hover:bg-squadspot-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-squadspot-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary transition-colors"
+              className="ml-6 inline-flex items-center px-6 py-3 border border-transparent text-sm font-semibold rounded-xl text-primary-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/90 hover:from-tovuti-primary/90 hover:to-tovuti-primary shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-tovuti-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary transition-all duration-200 transform hover:scale-105"
             >
               Sign out
             </button>
@@ -72,7 +77,7 @@ export default function Header() {
           <div className="flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen((open) => !open)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-secondary-foreground hover:text-squadspot-primary hover:bg-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-squadspot-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary"
+              className="inline-flex items-center justify-center p-3 rounded-xl text-secondary-foreground hover:text-tovuti-primary hover:bg-tovuti-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-tovuti-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary transition-all duration-200 shadow-sm"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? (
@@ -87,13 +92,13 @@ export default function Header() {
 
       {/* Mobile Nav Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-secondary border-t border-border shadow-lg animate-in fade-in duration-200">
-          <div className="px-4 pt-4 pb-2 space-y-1 flex flex-col">
+        <div className="md:hidden bg-gradient-to-b from-secondary to-secondary/95 border-t border-tovuti-primary/30 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="px-4 pt-6 pb-4 space-y-2 flex flex-col">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`block px-3 py-2 rounded-md border-b-2 text-base font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-squadspot-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary ${getLinkClass(
+                className={`block px-4 py-3 rounded-xl border-b-2 text-base font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-tovuti-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary transition-all duration-200 ${getLinkClass(
                   link.path
                 )}`}
                 tabIndex={0}
@@ -107,7 +112,7 @@ export default function Header() {
                 setMobileMenuOpen(false);
                 handleLogout();
               }}
-              className="w-full mt-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-squadspot-primary hover:bg-squadspot-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-squadspot-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary"
+              className="w-full mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-xl text-primary-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/90 hover:from-tovuti-primary/90 hover:to-tovuti-primary shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-tovuti-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary transition-all duration-200"
             >
               Sign out
             </button>

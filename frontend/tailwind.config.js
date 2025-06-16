@@ -29,11 +29,11 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
-        squadspot: {
-          primary: "hsl(var(--squadspot-primary))", // Green
-          secondary: "hsl(var(--squadspot-secondary))", // Dark Gray
+        tovuti: {
+          primary: "hsl(var(--tovuti-primary))", // Green
+          secondary: "hsl(var(--tovuti-secondary))", // Dark Gray
           accent: "#95191E", // Red
-          neutral: "hsl(var(--squadspot-neutral))", // Light Gray
+          neutral: "hsl(var(--tovuti-neutral))", // Light Gray
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

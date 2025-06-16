@@ -27,7 +27,7 @@ export default function Modal({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity" />
+          <div className="fixed inset-0 bg-background/90 backdrop-blur-md transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -41,11 +41,11 @@ export default function Modal({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-card text-card-foreground px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
-                <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-2xl bg-gradient-to-br from-card to-card/95 text-card-foreground px-6 pb-6 pt-8 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-3xl sm:p-8 border border-border/50 backdrop-blur-sm">
+                <div className="absolute right-0 top-0 hidden pr-6 pt-6 sm:block">
                   <button
                     type="button"
-                    className="rounded-md bg-card text-muted-foreground hover:text-foreground focus:outline-none"
+                    className="rounded-xl bg-card/80 p-2 text-muted-foreground hover:text-foreground hover:bg-muted/80 focus:outline-none focus:ring-2 focus:ring-tovuti-primary focus:ring-offset-2 transition-all duration-200 shadow-sm"
                     onClick={onClose}
                   >
                     <span className="sr-only">Close</span>
@@ -55,11 +55,13 @@ export default function Modal({
                 <div>
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-card-foreground"
+                    className="text-2xl font-bold leading-6 text-card-foreground mb-2 bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent"
                   >
                     {title}
                   </Dialog.Title>
-                  <div className="mt-4">{children}</div>
+                  <div className="mt-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                    {children}
+                  </div>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
