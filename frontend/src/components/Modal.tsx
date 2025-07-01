@@ -55,7 +55,7 @@ export default function Modal({
                 <div>
                   <Dialog.Title
                     as="h3"
-                    className="text-2xl font-bold leading-6 text-card-foreground mb-2 bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent"
+                    className="text-2xl leading-6 text-card-foreground mb-2 bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent"
                   >
                     {title}
                   </Dialog.Title>

@@ -249,7 +249,7 @@ export default function Customers() {
       {/* Header */}
       <div className="sm:flex sm:items-center sm:justify-between bg-gradient-to-br from-card to-card/80 shadow-xl rounded-2xl p-8 border border-border/50 backdrop-blur-sm">
         <div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
+          <h2 className="text-3xl bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
             Customers
           </h2>
           <p className="mt-2 text-muted-foreground">
@@ -415,43 +415,43 @@ export default function Customers() {
               <tr className="divide-x divide-border/30">
                 <th
                   scope="col"
-                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs text-muted-foreground uppercase tracking-wider"
                 >
                   Name
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs text-muted-foreground uppercase tracking-wider"
                 >
                   Contact
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs text-muted-foreground uppercase tracking-wider"
                 >
                   Company
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs text-muted-foreground uppercase tracking-wider"
                 >
                   Status
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs text-muted-foreground uppercase tracking-wider"
                 >
                   Price
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs text-muted-foreground uppercase tracking-wider"
                 >
                   Payment
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-4 text-left text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                  className="px-6 py-4 text-left text-xs text-muted-foreground uppercase tracking-wider"
                 >
                   Added
                 </th>
@@ -498,7 +498,7 @@ export default function Customers() {
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap">
                       <span
-                        className={`px-3 py-1.5 inline-flex text-xs leading-5 font-bold rounded-xl border ${
+                        className={`px-3 py-1.5 inline-flex text-xs leading-5 rounded-xl border ${
                           customer.status === "active"
                             ? "bg-tovuti-primary/10 text-tovuti-primary border-tovuti-primary/30"
                             : "bg-muted/20 text-muted-foreground border-muted/30"
@@ -513,7 +513,7 @@ export default function Customers() {
                     <td className="px-6 py-5 whitespace-nowrap">
                       <div className="flex flex-col space-y-1">
                         <span
-                          className={`px-3 py-1.5 inline-flex text-xs leading-5 font-bold rounded-xl border w-fit ${
+                          className={`px-3 py-1.5 inline-flex text-xs leading-5 rounded-xl border w-fit ${
                             customer.hasPaid
                               ? "bg-tovuti-primary/10 text-tovuti-primary border-tovuti-primary/30"
                               : "bg-yellow-100 text-yellow-800 border-yellow-300"

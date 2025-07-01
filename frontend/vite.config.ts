@@ -14,5 +14,15 @@ export default defineConfig({
   },
   css: {
     postcss: './postcss.config.js',
+  },
+  server: {
+    headers: {
+      'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet, noimageindex',
+      'X-Frame-Options': 'DENY',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'no-referrer',
+      'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+      'Content-Security-Policy': "frame-ancestors 'none'",
+    }
   }
 });

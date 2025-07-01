@@ -294,7 +294,7 @@ export default function Dashboard() {
             <UserIcon className="h-8 w-8 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl text-gray-900">
               Welcome back, {(userName || "User").split(" ")[0]}!
             </h1>
             <p className="text-gray-600 mt-1 text-lg">
@@ -327,9 +327,7 @@ export default function Dashboard() {
                 <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
                   {item.name}
                 </p>
-                <p className={`text-3xl font-bold ${item.color} mt-1`}>
-                  {item.value}
-                </p>
+                <p className={`text-3xl ${item.color} mt-1`}>{item.value}</p>
               </div>
             </div>
           ))}
@@ -346,7 +344,7 @@ export default function Dashboard() {
             <div className="p-8 border-b border-gray-200">
               <h2
                 id="recent-customers-heading"
-                className="text-xl font-bold text-tovuti-primary"
+                className="text-xl text-tovuti-primary"
               >
                 Recent Customers
               </h2>
@@ -427,7 +425,7 @@ export default function Dashboard() {
             <div className="p-8 border-b border-gray-200">
               <h2
                 id="recent-feedback-heading"
-                className="text-xl font-bold text-tovuti-primary"
+                className="text-xl text-tovuti-primary"
               >
                 Recent Feedback
               </h2>

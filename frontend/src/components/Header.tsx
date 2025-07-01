@@ -39,12 +39,17 @@ export default function Header() {
           <Link to="/dashboard" className="flex items-center flex-shrink-0">
             <img
               className="h-10 w-auto"
-              src="/images/logo-no-text.png"
+              src="/images/logo.png"
               alt="ClientSync logo"
             />
-            <span className="ml-3 text-2xl font-bold tracking-tight text-tovuti-primary font-aldrich select-none">
-              ClientSync
-            </span>
+            <div className="ml-2">
+              <span className="text-2xl tracking-tight text-tovuti-primary font-aldrich select-none">
+                ClientSync
+              </span>
+              <div className="text-xs text-gray-400 -mt-1">
+                Powered by Tovuti LLC
+              </div>
+            </div>
           </Link>
 
           {/* Desktop Nav */}

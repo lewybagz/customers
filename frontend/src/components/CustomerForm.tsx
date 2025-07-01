@@ -106,7 +106,7 @@ export default function CustomerForm({
         {/* Basic Information */}
         <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
           <div className="border-b border-tovuti-primary/20 pb-4">
-            <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+            <h3 className="text-xl leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
               Basic Information
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -305,7 +305,7 @@ export default function CustomerForm({
         {/* Status and Financials */}
         <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
           <div className="border-b border-tovuti-primary/20 pb-4">
-            <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+            <h3 className="text-xl leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
               Status & Financials
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -468,7 +468,7 @@ export default function CustomerForm({
         {/* Additional Information */}
         <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
           <div className="border-b border-tovuti-primary/20 pb-4">
-            <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+            <h3 className="text-xl leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
               Additional Information
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">

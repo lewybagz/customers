@@ -9,7 +9,7 @@ import {
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import logo from "/images/logo-no-text.png";
+import logo from "/images/logo.png";
 
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
@@ -85,7 +85,7 @@ export default function Login() {
               className="w-full h-full object-contain"
             />
           </div>
-          <h2 className="text-center text-3xl sm:text-4xl font-bold bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
+          <h2 className="text-center text-3xl sm:text-4xl bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
             {isSignup ? "Create your account" : "Welcome back"}
           </h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">

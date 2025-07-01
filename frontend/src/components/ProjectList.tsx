@@ -124,7 +124,7 @@ export default function ProjectList() {
     <div className="space-y-8 pt-16 border-t border-gradient-to-r from-tovuti-primary/30 via-tovuti-primary/50 to-tovuti-primary/30">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+          <h2 className="text-3xl text-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Projects
           </h2>
           <p className="mt-2 text-muted-foreground">
@@ -158,9 +158,7 @@ export default function ProjectList() {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-bold text-card-foreground mb-2">
-            No projects yet
-          </h3>
+          <h3 className="text-xl text-card-foreground mb-2">No projects yet</h3>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">
             Get started by adding your first project. Track progress, manage
             timelines, and showcase your work.

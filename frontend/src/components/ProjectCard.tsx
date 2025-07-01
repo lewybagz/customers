@@ -97,13 +97,13 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-3">
           <h3
-            className="text-xl font-bold text-tovuti-primary truncate flex-1 mr-2"
+            className="text-xl text-tovuti-primary truncate flex-1 mr-2"
             title={name}
           >
             {name}
           </h3>
           <span
-            className={`px-3 py-1.5 text-xs font-bold rounded-xl border shadow-sm ${getStatusColor(
+            className={`px-3 py-1.5 text-xs rounded-xl border shadow-sm ${getStatusColor(
               status
             )}`}
           >
@@ -128,7 +128,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
 
         {technologies && technologies.length > 0 && (
           <div className="mb-4">
-            <h4 className="text-xs font-bold text-muted-foreground mb-2 uppercase tracking-wide">
+            <h4 className="text-xs text-muted-foreground mb-2 uppercase tracking-wide">
               Technologies:
             </h4>
             <div className="flex flex-wrap gap-2">

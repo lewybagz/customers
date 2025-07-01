@@ -170,7 +170,7 @@ export default function ProjectForm({
       {/* Project Details Section */}
       <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
         <div className="border-b border-tovuti-primary/20 pb-4">
-          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+          <h3 className="text-xl leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Project Details
           </h3>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -275,7 +275,7 @@ export default function ProjectForm({
       {/* Links & Media Section */}
       <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
         <div className="border-b border-tovuti-primary/20 pb-4">
-          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+          <h3 className="text-xl leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Links & Media
           </h3>
         </div>
@@ -339,7 +339,7 @@ export default function ProjectForm({
       {/* Technical Details Section */}
       <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
         <div className="border-b border-tovuti-primary/20 pb-4">
-          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+          <h3 className="text-xl leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Technical Details
           </h3>
         </div>
@@ -377,7 +377,7 @@ export default function ProjectForm({
       {/* Status and Timeline Section */}
       <div className="bg-gradient-to-br from-card to-card/80 p-8 rounded-2xl shadow-lg border border-border/50 space-y-6 backdrop-blur-sm">
         <div className="border-b border-tovuti-primary/20 pb-4">
-          <h3 className="text-xl font-bold leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
+          <h3 className="text-xl leading-6 text-card-foreground bg-gradient-to-r from-tovuti-primary to-tovuti-primary/80 bg-clip-text text-transparent">
             Status & Timeline
           </h3>
         </div>

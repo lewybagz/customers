@@ -355,7 +355,7 @@ export default function Suggestions() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
+              <h1 className="text-3xl bg-gradient-to-r from-card-foreground to-card-foreground/80 bg-clip-text text-transparent">
                 User Suggestions & Feedback
               </h1>
               <p className="mt-2 text-muted-foreground">
@@ -528,7 +528,7 @@ export default function Suggestions() {
               >
                 <div>
                   <div className="flex items-start justify-between mb-4">
-                    <h3 className="text-lg font-bold text-card-foreground line-clamp-2">
+                    <h3 className="text-lg text-card-foreground line-clamp-2">
                       {suggestion.title}
                     </h3>
                     <div className="ml-3 flex-shrink-0">
@@ -540,7 +540,7 @@ export default function Suggestions() {
                       {suggestion.type.replace("_", " ")}
                     </span>
                     <span
-                      className={`text-xs font-bold px-3 py-1.5 rounded-xl border ${getPriorityColor(
+                      className={`text-xs px-3 py-1.5 rounded-xl border ${getPriorityColor(
                         suggestion.priority
                       )}`}
                     >
@@ -575,7 +575,7 @@ export default function Suggestions() {
           <div className="text-center py-20">
             <div className="bg-gradient-to-br from-muted/20 to-muted/10 rounded-2xl p-12 max-w-md mx-auto">
               <DocumentMagnifyingGlassIcon className="mx-auto h-16 w-16 text-muted-foreground/50 mb-4" />
-              <h3 className="text-xl font-bold text-foreground mb-2">
+              <h3 className="text-xl text-foreground mb-2">
                 No suggestions found
               </h3>
               <p className="text-muted-foreground">
@@ -595,9 +595,7 @@ export default function Suggestions() {
         >
           <div className="space-y-8 text-sm">
             <div className="bg-gradient-to-r from-muted/20 to-muted/10 p-6 rounded-xl border border-border/30">
-              <h4 className="font-bold text-foreground mb-4 text-lg">
-                Details
-              </h4>
+              <h4 className="text-foreground mb-4 text-lg">Details</h4>
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                 <div>
                   <dt className="font-semibold text-muted-foreground">Type</dt>
@@ -611,7 +609,7 @@ export default function Suggestions() {
                   </dt>
                   <dd className="mt-1">
                     <span
-                      className={`px-3 py-1.5 rounded-xl inline-block text-xs font-bold border ${getPriorityColor(
+                      className={`px-3 py-1.5 rounded-xl inline-block text-xs border ${getPriorityColor(
                         selectedSuggestion.priority
                       )}`}
                     >
@@ -643,9 +641,7 @@ export default function Suggestions() {
 
             {selectedSuggestion.description && (
               <div>
-                <h4 className="font-bold text-foreground mb-3 text-lg">
-                  Description
-                </h4>
+                <h4 className="text-foreground mb-3 text-lg">Description</h4>
                 <div className="bg-gradient-to-r from-muted/10 to-muted/5 p-4 rounded-xl border border-border/30">
                   <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
                     {selectedSuggestion.description}
@@ -656,9 +652,7 @@ export default function Suggestions() {
 
             {(selectedSuggestion.userName || selectedSuggestion.userEmail) && (
               <div className="bg-gradient-to-r from-muted/20 to-muted/10 p-6 rounded-xl border border-border/30">
-                <h4 className="font-bold text-foreground mb-4 text-lg">
-                  User Info
-                </h4>
+                <h4 className="text-foreground mb-4 text-lg">User Info</h4>
                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                   {selectedSuggestion.userName && (
                     <div>
@@ -696,9 +690,7 @@ export default function Suggestions() {
 
             {selectedSuggestion.businessName && (
               <div className="bg-gradient-to-r from-tovuti-primary/10 to-tovuti-primary/5 p-6 rounded-xl border border-tovuti-primary/20">
-                <h4 className="font-bold text-foreground mb-2 text-lg">
-                  Business
-                </h4>
+                <h4 className="text-foreground mb-2 text-lg">Business</h4>
                 <p className="text-muted-foreground">
                   {selectedSuggestion.businessName} (ID:{" "}
                   {selectedSuggestion.businessId || "N/A"})
@@ -709,9 +701,7 @@ export default function Suggestions() {
             {selectedSuggestion.screenshotUrls &&
               selectedSuggestion.screenshotUrls.length > 0 && (
                 <div>
-                  <h4 className="font-bold text-foreground mb-4 text-lg">
-                    Screenshots
-                  </h4>
+                  <h4 className="text-foreground mb-4 text-lg">Screenshots</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {selectedSuggestion.screenshotUrls.map((url, index) => (
                       <a
@@ -734,9 +724,7 @@ export default function Suggestions() {
 
             {selectedSuggestion.systemInfo && (
               <div>
-                <h4 className="font-bold text-foreground mb-4 text-lg">
-                  System Info
-                </h4>
+                <h4 className="text-foreground mb-4 text-lg">System Info</h4>
                 <pre className="text-xs bg-gradient-to-r from-muted/30 to-muted/20 p-4 rounded-xl overflow-x-auto text-muted-foreground border border-border/30 font-mono">
                   {JSON.stringify(selectedSuggestion.systemInfo, null, 2)}
                 </pre>
@@ -744,9 +732,7 @@ export default function Suggestions() {
             )}
 
             <div className="pt-6 border-t border-border/30">
-              <h4 className="font-bold text-foreground mb-4 text-lg">
-                Update Status
-              </h4>
+              <h4 className="text-foreground mb-4 text-lg">Update Status</h4>
               <div className="flex flex-wrap gap-3">
                 {getStatusOptions(selectedSuggestion.type).map(
                   (statusOption) => (
